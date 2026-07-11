@@ -23,12 +23,23 @@ const usePg = !!process.env.DATABASE_URL;
 const DATA_DIR = path.join(process.cwd(), ".data");
 const FILE = path.join(DATA_DIR, "stock.json");
 
+const NO_DB_HINT =
+  "Listings can't be saved on this host without a database. Add a DATABASE_URL " +
+  "(e.g. a free Supabase Postgres) in your hosting environment variables, then redeploy.";
+
 async function fileReadAll(): Promise<Car[]> {
   try {
     const raw = await fs.readFile(FILE, "utf8");
     return JSON.parse(raw) as Car[];
   } catch {
-    await fileWriteAll(seedStock);
+    // First run, or a read-only host (e.g. Vercel without a database). Try to
+    // seed the file, but never crash the page if the filesystem is read-only —
+    // just serve the seed data from memory.
+    try {
+      await fileWriteAll(seedStock);
+    } catch {
+      /* read-only filesystem — fine, fall back to in-memory seed */
+    }
     return [...seedStock];
   }
 }
@@ -36,6 +47,15 @@ async function fileReadAll(): Promise<Car[]> {
 async function fileWriteAll(cars: Car[]): Promise<void> {
   await fs.mkdir(DATA_DIR, { recursive: true });
   await fs.writeFile(FILE, JSON.stringify(cars, null, 2), "utf8");
+}
+
+/** Persist a change to the file store, surfacing a clear message if the host is read-only. */
+async function fileMutate(next: Car[]): Promise<void> {
+  try {
+    await fileWriteAll(next);
+  } catch {
+    throw new Error(NO_DB_HINT);
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -114,7 +134,7 @@ export async function createCar(car: Car): Promise<void> {
     return;
   }
   const all = await fileReadAll();
-  await fileWriteAll([car, ...all]);
+  await fileMutate([car, ...all]);
 }
 
 export async function updateCar(slug: string, car: Car): Promise<void> {
@@ -131,7 +151,7 @@ export async function updateCar(slug: string, car: Car): Promise<void> {
   }
   const all = await fileReadAll();
   const next = all.map((c) => (c.slug === slug ? car : c));
-  await fileWriteAll(next);
+  await fileMutate(next);
 }
 
 export async function deleteCar(slug: string): Promise<void> {
@@ -141,7 +161,7 @@ export async function deleteCar(slug: string): Promise<void> {
     return;
   }
   const all = await fileReadAll();
-  await fileWriteAll(all.filter((c) => c.slug !== slug));
+  await fileMutate(all.filter((c) => c.slug !== slug));
 }
 
 export async function slugExists(slug: string, ignore?: string): Promise<boolean> {

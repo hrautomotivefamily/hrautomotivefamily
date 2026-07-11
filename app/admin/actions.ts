@@ -125,10 +125,14 @@ export async function saveCar(
     };
   }
 
-  if (originalSlug) {
-    await updateCar(originalSlug, built);
-  } else {
-    await createCar(built);
+  try {
+    if (originalSlug) {
+      await updateCar(originalSlug, built);
+    } else {
+      await createCar(built);
+    }
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Could not save the listing." };
   }
 
   revalidatePath("/");

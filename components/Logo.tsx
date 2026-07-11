@@ -10,35 +10,29 @@ import type { SVGProps } from "react";
  */
 export function Logo(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 60 38"
-      fill="none"
-      aria-hidden="true"
-      {...props}
-    >
-      {/* main roofline swoosh */}
+    <svg viewBox="0 0 124 60" fill="none" aria-hidden="true" {...props}>
+      {/* sleek sports-car side silhouette */}
       <path
-        d="M3 24C6 23.2 8 22 11 19.5C16 12.5 24 9 33 10C43 11 51 15.5 57 24"
-        stroke="currentColor"
-        strokeWidth="3.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        fill="currentColor"
+        d="M9 47
+           C7 44 8 40 12 38
+           L22 34
+           C30 25 44 19 60 18
+           C74 17.2 86 19 97 25
+           C104 28.5 110 31 117 33
+           C121 34 122 37 121 41
+           L120 45
+           C119.5 47 118 48 116 48
+           L106 48
+           A11 11 0 0 0 84 48
+           L47 48
+           A11 11 0 0 0 25 48
+           L14 48
+           C11.5 48 9.8 48 9 47 Z"
       />
-      {/* lower front accent swoosh */}
-      <path
-        d="M2 29C7 27.4 13 26.6 20 27"
-        stroke="currentColor"
-        strokeWidth="3.4"
-        strokeLinecap="round"
-      />
-      {/* headlight / character notch */}
-      <path
-        d="M20 18.5C22.5 17.4 25.5 16.8 29 16.9"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        opacity="0.55"
-      />
+      {/* wheels */}
+      <circle cx="36" cy="47.5" r="7.5" fill="none" stroke="currentColor" strokeWidth="3.4" />
+      <circle cx="95" cy="47.5" r="7.5" fill="none" stroke="currentColor" strokeWidth="3.4" />
     </svg>
   );
 }
