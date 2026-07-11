@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #f6f7f8;
+  --fg: #1b1b1b;
+  --muted: #5b6572;
+  --border: rgba(15, 45, 82, 0.1);
+  --card: #ffffff;
+}
+
+.dark {
+  --bg: #0b1626;
+  --bg-subtle: #101f33;
+  --fg: #eef2f7;
+  --muted: #9aa7b8;
+  --border: rgba(255, 255, 255, 0.08);
+  --card: #101f33;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@layer components {
+  .container-px {
+    @apply mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-12;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-transparent;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-white shadow-soft hover:-translate-y-0.5 hover:shadow-soft-lg hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply btn border border-white/25 bg-white/5 text-white backdrop-blur-md hover:bg-white/15;
+  }
+  .btn-outline {
+    @apply btn border border-[color:var(--border)] bg-transparent text-[color:var(--fg)] hover:border-accent hover:text-accent;
+  }
+  .eyebrow {
+    @apply inline-block text-xs font-semibold uppercase tracking-[0.28em] text-accent;
+  }
+  .card-surface {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+  }
+}
+
+/* Subtle grain / texture-free luxury gradient helpers */
+.text-muted {
+  color: var(--muted);
+}
+.border-hair {
+  border-color: var(--border);
+}
+
+/* Custom scrollbar for a refined feel */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 45, 82, 0.3);
+  border-radius: 999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+}
