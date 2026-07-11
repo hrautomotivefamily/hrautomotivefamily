@@ -14,9 +14,18 @@ export function Footer() {
               <span className="font-heading text-lg font-bold">{site.name}</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">
-              {site.tagline} Expert vehicle repairs, bodywork and paint
-              restoration you can trust.
+              {site.tagline} Halifax&apos;s family-run bodyshop for expert
+              repairs, bodywork and quality used cars you can trust.
             </p>
+            <a
+              href={site.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/15"
+            >
+              <Icon name="facebook" width={18} height={18} />
+              Follow us on Facebook
+            </a>
           </div>
 
           <div>

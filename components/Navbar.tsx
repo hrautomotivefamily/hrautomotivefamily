@@ -8,16 +8,23 @@ import { Icon } from "./Icons";
 import { ThemeToggle } from "./ThemeToggle";
 import { Logo } from "./Logo";
 
-export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+export function Navbar({
+  variant = "overlay",
+}: {
+  /** "overlay" sits transparent over a dark hero; "solid" is for interior pages. */
+  variant?: "overlay" | "solid";
+}) {
+  const [scrolledState, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const scrolled = variant === "solid" ? true : scrolledState;
 
   useEffect(() => {
+    if (variant === "solid") return;
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [variant]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -37,7 +44,7 @@ export function Navbar() {
       >
         <nav className="container-px flex h-[72px] items-center justify-between">
           <Link
-            href="#top"
+            href="/"
             className="flex items-center gap-3"
             aria-label={`${site.name} home`}
           >
@@ -74,7 +81,7 @@ export function Navbar() {
               <ThemeToggle
                 className={scrolled ? "" : "border-white/25 text-white"}
               />
-              <Link href="#contact" className="btn-primary">
+              <Link href="/#contact" className="btn-primary">
                 Get a Free Quote
               </Link>
             </div>
@@ -153,7 +160,7 @@ export function Navbar() {
                 className="mt-6"
               >
                 <Link
-                  href="#contact"
+                  href="/#contact"
                   onClick={() => setOpen(false)}
                   className="btn-primary w-full"
                 >

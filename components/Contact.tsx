@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { openingHours, site } from "@/lib/site";
+import { openingHours, site, areaServed } from "@/lib/site";
 import { Icon } from "./Icons";
 import { Reveal } from "./Reveal";
 
@@ -108,6 +108,24 @@ export function Contact() {
                     Google Map placeholder
                   </p>
                 </div>
+              </div>
+            </div>
+
+            {/* areas we cover */}
+            <div className="mt-4">
+              <h3 className="flex items-center gap-2 font-heading font-bold">
+                <Icon name="pin" className="text-accent" />
+                Areas we cover
+              </h3>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {areaServed.map((area) => (
+                  <span
+                    key={area}
+                    className="rounded-full border border-hair px-3.5 py-1.5 text-sm text-muted"
+                  >
+                    {area}
+                  </span>
+                ))}
               </div>
             </div>
           </Reveal>

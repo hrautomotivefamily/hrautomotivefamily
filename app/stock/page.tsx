@@ -1,0 +1,81 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
+import { StockCard } from "@/components/StockCard";
+import { Icon } from "@/components/Icons";
+import { stock } from "@/lib/stock";
+import { site, areaServed } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Cars for Sale in Halifax",
+  description: `Quality used cars, repaired and finished in-house by ${site.name} in Halifax, West Yorkshire. Honest descriptions and fair prices.`,
+};
+
+export default function StockPage() {
+  const available = stock.filter((c) => c.status !== "sold");
+
+  return (
+    <>
+      <Navbar variant="solid" />
+      <main id="main" className="pt-[72px]">
+        {/* header */}
+        <section className="border-b border-hair bg-[color:var(--bg-subtle)]">
+          <div className="container-px py-14 sm:py-20">
+            <nav className="mb-5 flex items-center gap-2 text-sm text-muted">
+              <Link href="/" className="hover:text-accent">
+                Home
+              </Link>
+              <span>/</span>
+              <span className="text-[color:var(--fg)]">Cars for Sale</span>
+            </nav>
+            <span className="eyebrow">Current Stock</span>
+            <h1 className="mt-4 max-w-3xl font-heading text-4xl font-bold tracking-tight sm:text-5xl">
+              Quality used cars in {site.locality}, {site.region}
+            </h1>
+            <p className="mt-5 max-w-2xl text-lg text-muted">
+              Each car is repaired and prepared in our own workshop before it goes
+              on sale. Serving {areaServed.slice(0, 5).join(", ")} and the wider{" "}
+              {site.region}.
+            </p>
+          </div>
+        </section>
+
+        {/* grid */}
+        <section className="py-16 sm:py-20">
+          <div className="container-px">
+            {available.length > 0 ? (
+              <>
+                <p className="mb-8 text-sm font-medium text-muted">
+                  {available.length} {available.length === 1 ? "car" : "cars"} available
+                </p>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {stock.map((car, i) => (
+                    <StockCard key={car.slug} car={car} priority={i < 3} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="card-surface mx-auto max-w-xl rounded-xl2 p-12 text-center shadow-soft">
+                <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-navy text-white">
+                  <Icon name="car" width={28} height={28} />
+                </span>
+                <p className="mt-6 text-lg font-semibold">
+                  No cars in stock right now
+                </p>
+                <p className="mt-2 text-muted">
+                  We add new arrivals regularly. Follow us on Facebook or get in
+                  touch to be first to know.
+                </p>
+                <Link href="/#contact" className="btn-primary mt-8">
+                  Contact us
+                </Link>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}

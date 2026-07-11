@@ -3,12 +3,13 @@ import { Hero } from "@/components/Hero";
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { ProcessTimeline } from "@/components/ProcessTimeline";
 import { Services } from "@/components/Services";
+import { StockSection } from "@/components/StockSection";
 import { Gallery } from "@/components/Gallery";
 import { Testimonials } from "@/components/Testimonials";
 import { CTABand } from "@/components/CTABand";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
-import { site, services, testimonials } from "@/lib/site";
+import { site, services, testimonials, areaServed } from "@/lib/site";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -17,12 +18,16 @@ const jsonLd = {
   slogan: site.tagline,
   description: site.description,
   email: site.email,
+  telephone: site.phone,
   image: "/og.png",
   priceRange: "££",
   address: {
     "@type": "PostalAddress",
-    streetAddress: site.address,
+    addressLocality: site.locality,
+    addressRegion: site.region,
+    addressCountry: "GB",
   },
+  areaServed: areaServed.map((name) => ({ "@type": "City", name })),
   makesOffer: services.map((s) => ({
     "@type": "Offer",
     itemOffered: { "@type": "Service", name: s.title },
@@ -47,6 +52,7 @@ export default function Home() {
         <BeforeAfter />
         <ProcessTimeline />
         <Services />
+        <StockSection />
         <Gallery />
         <Testimonials />
         <CTABand />

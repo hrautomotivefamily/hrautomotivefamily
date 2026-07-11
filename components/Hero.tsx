@@ -59,7 +59,7 @@ export function Hero() {
             className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-medium tracking-wide text-white/80 backdrop-blur-md"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-success" />
-            Family owned & operated
+            Family-run bodyshop — Halifax, West Yorkshire
           </motion.span>
 
           <motion.h1

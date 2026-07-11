@@ -1,0 +1,81 @@
+export type StockStatus = "available" | "reserved" | "sold";
+
+export type Car = {
+  slug: string;
+  make: string;
+  model: string;
+  title: string;
+  year: number;
+  plateAge: string; // e.g. "68 reg"
+  price: number;
+  mileage: number | null; // null = "on request"
+  engine: string;
+  transmission: "Manual" | "Automatic";
+  fuel: "Petrol" | "Diesel" | "Hybrid" | "Electric";
+  colour: string;
+  doors: number;
+  bodyStyle: string;
+  status: StockStatus;
+  // Palette tone used for the placeholder artwork until real photos are added.
+  tone: "navy" | "charcoal" | "midnight" | "slate";
+  // Real photos live in /public/stock/<slug>/… — leave empty to use the placeholder.
+  images: string[];
+  summary: string;
+  features: string[];
+};
+
+/**
+ * Current stock. Add a new object per car; drop its photos into
+ * public/stock/<slug>/ and list them in `images` (first image is the cover).
+ * Set `status` to "reserved" or "sold" to show a ribbon and dim the card.
+ */
+export const stock: Car[] = [
+  {
+    slug: "toyota-aygo-x-play-68",
+    make: "Toyota",
+    model: "Aygo",
+    title: "Toyota Aygo 1.0 VVT-i x-play",
+    year: 2018,
+    plateAge: "68 reg",
+    price: 4395,
+    mileage: null,
+    engine: "1.0 VVT-i",
+    transmission: "Manual",
+    fuel: "Petrol",
+    colour: "Red",
+    doors: 5,
+    bodyStyle: "Hatchback",
+    status: "available",
+    tone: "navy",
+    images: [],
+    summary:
+      "Fully repaired and finished in-house to our own standard. Ideal first car or city runaround — cheap to run, cheap to insure and ready to drive away.",
+    features: [
+      "£20 a year road tax",
+      "Low insurance group",
+      "Bluetooth & DAB",
+      "Air conditioning",
+      "Electric windows",
+      "Full service history",
+      "12 months MOT",
+      "Fresh professional respray",
+    ],
+  },
+];
+
+export function getCar(slug: string) {
+  return stock.find((c) => c.slug === slug);
+}
+
+export function formatPrice(n: number) {
+  return new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
+  }).format(n);
+}
+
+export function formatMileage(n: number | null) {
+  if (n === null) return "On request";
+  return `${new Intl.NumberFormat("en-GB").format(n)} miles`;
+}

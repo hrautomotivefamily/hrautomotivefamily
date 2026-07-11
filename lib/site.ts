@@ -2,21 +2,38 @@ export const site = {
   name: "HR Automotive",
   tagline: "Family Run. Professionally Done.",
   email: "HRautomotivefamily@gmail.com",
+  // TODO: replace with your real number — used for the click-to-call buttons
   phone: "+44 0000 000000",
   phoneDisplay: "Call us today",
+  // TODO: replace with your Facebook page/profile link
+  facebook: "https://www.facebook.com/",
   website: "www.hrautomotive.co.uk",
-  address: "Unit 1, Example Industrial Estate, Your Town, UK",
+  locality: "Halifax",
+  region: "West Yorkshire",
+  address: "Halifax, West Yorkshire",
   description:
-    "Expert vehicle repairs, bodywork and paint restoration completed with pride, precision and honest workmanship.",
+    "Halifax's family-run bodyshop. Expert accident repairs, bodywork and paint restoration completed with pride, precision and honest workmanship — professional results without dealership prices.",
 };
 
+// Local areas served — powers copy and local SEO
+export const areaServed = [
+  "Halifax",
+  "Calderdale",
+  "Brighouse",
+  "Elland",
+  "Sowerby Bridge",
+  "Hebden Bridge",
+  "Huddersfield",
+  "Bradford",
+];
+
 export const navLinks = [
-  { label: "Work", href: "#work" },
-  { label: "Process", href: "#process" },
-  { label: "Services", href: "#services" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "Contact", href: "#contact" },
+  { label: "Services", href: "/#services" },
+  { label: "Our Work", href: "/#work" },
+  { label: "Cars for Sale", href: "/stock" },
+  { label: "Gallery", href: "/#gallery" },
+  { label: "Reviews", href: "/#reviews" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export const services = [
@@ -144,25 +161,25 @@ export const testimonials = [
     quote:
       "The finish on my car is genuinely better than the dealership quoted, and at a fraction of the price. Honest, friendly and clearly proud of their work.",
     name: "Sarah M.",
-    detail: "Accident repair • BMW 3 Series",
+    detail: "Accident repair • Halifax",
   },
   {
     quote:
       "You would never know there was ever any damage. The colour match is perfect. A proper family business that treats you like a person, not a number.",
     name: "James T.",
-    detail: "Bodywork & respray • Audi A4",
+    detail: "Bodywork & respray • Brighouse",
   },
   {
     quote:
       "Kept me updated the whole way through and the paintwork is immaculate. I wouldn't trust anyone else with my car now.",
     name: "Priya K.",
-    detail: "Scratch & panel repair • Volvo XC60",
+    detail: "Scratch & panel repair • Huddersfield",
   },
   {
     quote:
       "Fair pricing, exceptional workmanship and no hard sell. They fixed exactly what was needed and the result is showroom quality.",
     name: "Daniel R.",
-    detail: "Alloy & bodywork • VW Golf",
+    detail: "Alloy & bodywork • Sowerby Bridge",
   },
 ];
 
