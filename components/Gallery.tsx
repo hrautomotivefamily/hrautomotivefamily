@@ -5,24 +5,30 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CarScene } from "./CarScene";
 import { Icon } from "./Icons";
 import { Reveal } from "./Reveal";
+import { galleryItems as items, type GalleryItem } from "@/lib/showcase";
 
-type Item = {
-  id: string;
-  title: string;
-  tone: "navy" | "charcoal" | "midnight" | "slate";
-  span: string;
-};
-
-const items: Item[] = [
-  { id: "g1", title: "Executive saloon — full respray", tone: "navy", span: "row-span-2" },
-  { id: "g2", title: "Alloy refinishing", tone: "charcoal", span: "" },
-  { id: "g3", title: "Rear quarter panel repair", tone: "slate", span: "" },
-  { id: "g4", title: "Bumper restoration", tone: "midnight", span: "row-span-2" },
-  { id: "g5", title: "Colour-matched blend", tone: "navy", span: "" },
-  { id: "g6", title: "Insurance collision repair", tone: "charcoal", span: "" },
-  { id: "g7", title: "Classic restoration", tone: "slate", span: "row-span-2" },
-  { id: "g8", title: "Scratch correction", tone: "midnight", span: "" },
-];
+function GalleryMedia({
+  item,
+  className,
+  seedSuffix = "",
+}: {
+  item: GalleryItem;
+  className?: string;
+  seedSuffix?: string;
+}) {
+  if (item.src) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={item.src} alt={item.title} className={className ?? "h-full w-full object-cover"} />;
+  }
+  return (
+    <CarScene
+      variant="repaired"
+      tone={item.tone}
+      seed={`${item.id}${seedSuffix}`}
+      className={className ?? "h-full w-full"}
+    />
+  );
+}
 
 export function Gallery() {
   const [open, setOpen] = useState<number | null>(null);
@@ -79,11 +85,9 @@ export function Gallery() {
                 aria-label={`View ${item.title}`}
                 className={`group relative overflow-hidden rounded-xl2 shadow-soft ${item.span}`}
               >
-                <CarScene
-                  variant="repaired"
-                  tone={item.tone}
-                  seed={item.id}
-                  className="h-full w-full transition-transform duration-700 ease-out group-hover:scale-110"
+                <GalleryMedia
+                  item={item}
+                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/10 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4 text-left">
@@ -139,13 +143,8 @@ export function Gallery() {
               onClick={(e) => e.stopPropagation()}
               className="w-full max-w-4xl"
             >
-              <div className="overflow-hidden rounded-xl2 shadow-soft-lg">
-                <CarScene
-                  variant="repaired"
-                  tone={items[open].tone}
-                  seed={`${items[open].id}-lb`}
-                  className="aspect-[16/10] w-full"
-                />
+              <div className="aspect-[16/10] w-full overflow-hidden rounded-xl2 shadow-soft-lg">
+                <GalleryMedia item={items[open]} seedSuffix="-lb" className="h-full w-full object-cover" />
               </div>
               <figcaption className="mt-4 text-center font-heading text-lg font-semibold text-white">
                 {items[open].title}

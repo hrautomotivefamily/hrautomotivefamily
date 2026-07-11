@@ -4,20 +4,29 @@ import { useCallback, useRef, useState } from "react";
 import { CarScene } from "./CarScene";
 import { Reveal } from "./Reveal";
 import { Icon } from "./Icons";
+import { beforeAfterItems, type BeforeAfterItem } from "@/lib/showcase";
 
-type Example = {
-  id: string;
-  label: string;
-  tone: "navy" | "charcoal" | "midnight" | "slate";
-};
+function Layer({
+  src,
+  fallbackVariant,
+  tone,
+  seed,
+  alt,
+}: {
+  src?: string;
+  fallbackVariant: "repaired" | "damaged";
+  tone: BeforeAfterItem["tone"];
+  seed: string;
+  alt: string;
+}) {
+  if (src) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={src} alt={alt} className="h-full w-full object-cover" />;
+  }
+  return <CarScene variant={fallbackVariant} tone={tone} seed={seed} className="h-full w-full" />;
+}
 
-const examples: Example[] = [
-  { id: "ex1", label: "Front wing collision repair", tone: "navy" },
-  { id: "ex2", label: "Full panel respray", tone: "charcoal" },
-  { id: "ex3", label: "Scratch & dent restoration", tone: "slate" },
-];
-
-function Slider({ example }: { example: Example }) {
+function Slider({ item }: { item: BeforeAfterItem }) {
   const [pos, setPos] = useState(52);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -30,16 +39,16 @@ function Slider({ example }: { example: Example }) {
     setPos(Math.max(2, Math.min(98, pct)));
   }, []);
 
+  // Dragging works anywhere on the image, not just on the handle.
   const onPointerDown = (e: React.PointerEvent) => {
     dragging.current = true;
-    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    containerRef.current?.setPointerCapture?.(e.pointerId);
     updateFromClientX(e.clientX);
   };
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!dragging.current) return;
-    updateFromClientX(e.clientX);
+    if (dragging.current) updateFromClientX(e.clientX);
   };
-  const onPointerUp = () => {
+  const stop = () => {
     dragging.current = false;
   };
 
@@ -51,35 +60,27 @@ function Slider({ example }: { example: Example }) {
   return (
     <div
       ref={containerRef}
-      className="group relative aspect-[16/10] w-full touch-none select-none overflow-hidden rounded-xl2 shadow-soft-lg"
+      className="group relative aspect-[16/10] w-full cursor-ew-resize touch-none select-none overflow-hidden rounded-xl2 shadow-soft-lg"
+      onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerLeave={onPointerUp}
+      onPointerUp={stop}
+      onPointerCancel={stop}
+      onPointerLeave={stop}
     >
       {/* AFTER (repaired) — full background */}
-      <div className="absolute inset-0">
-        <CarScene
-          variant="repaired"
-          tone={example.tone}
-          seed={`${example.id}-after`}
-          className="h-full w-full"
-        />
+      <div className="pointer-events-none absolute inset-0">
+        <Layer src={item.after} fallbackVariant="repaired" tone={item.tone} seed={`${item.id}-after`} alt={`${item.label} — after`} />
         <span className="absolute right-4 top-4 rounded-full bg-success/90 px-3 py-1 text-xs font-semibold tracking-wide text-white shadow-soft">
           After
         </span>
       </div>
 
-      {/* BEFORE (damaged) — clipped */}
+      {/* BEFORE (damaged) — clipped to the left of the handle */}
       <div
-        className="absolute inset-0"
+        className="pointer-events-none absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
       >
-        <CarScene
-          variant="damaged"
-          tone={example.tone}
-          seed={`${example.id}-before`}
-          className="h-full w-full"
-        />
+        <Layer src={item.before} fallbackVariant="damaged" tone={item.tone} seed={`${item.id}-before`} alt={`${item.label} — before`} />
         <span className="absolute left-4 top-4 rounded-full bg-charcoal/85 px-3 py-1 text-xs font-semibold tracking-wide text-white shadow-soft">
           Before
         </span>
@@ -87,19 +88,18 @@ function Slider({ example }: { example: Example }) {
 
       {/* divider + glass handle */}
       <div
-        className="absolute inset-y-0 z-10 w-px bg-white/80 shadow-[0_0_18px_rgba(255,255,255,0.6)]"
+        className="pointer-events-none absolute inset-y-0 z-10 w-px bg-white/80 shadow-[0_0_18px_rgba(255,255,255,0.6)]"
         style={{ left: `${pos}%` }}
       >
         <button
           type="button"
           role="slider"
-          aria-label={`Reveal repaired result — ${example.label}`}
+          aria-label={`Reveal repaired result — ${item.label}`}
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(pos)}
-          onPointerDown={onPointerDown}
           onKeyDown={onKeyDown}
-          className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize items-center justify-center rounded-full border border-white/70 bg-white/15 text-white shadow-glass backdrop-blur-md transition-transform duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          className="pointer-events-auto absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 cursor-ew-resize items-center justify-center rounded-full border border-white/70 bg-white/15 text-white shadow-glass backdrop-blur-md transition-transform duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
         >
           <Icon name="arrow" width={16} height={16} className="-ml-1 rotate-180" />
           <Icon name="arrow" width={16} height={16} className="-ml-2" />
@@ -121,16 +121,16 @@ export function BeforeAfter() {
             The difference is in the detail
           </h2>
           <p className="mt-5 text-lg text-muted">
-            Drag the handle to reveal the transformation. Every repair is
-            finished to a standard we would put our own name to — because we do.
+            Drag anywhere across the image to reveal the transformation. Every
+            repair is finished to a standard we would put our own name to.
           </p>
         </Reveal>
 
         <Reveal delay={0.1} className="mx-auto mt-14 max-w-4xl">
-          <Slider example={examples[active]} key={examples[active].id} />
+          <Slider item={beforeAfterItems[active]} key={beforeAfterItems[active].id} />
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            {examples.map((ex, i) => (
+            {beforeAfterItems.map((ex, i) => (
               <button
                 key={ex.id}
                 type="button"

@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { navLinks, site } from "@/lib/site";
 import { Icon } from "./Icons";
 import { ThemeToggle } from "./ThemeToggle";
-import { Logo } from "./Logo";
+import { BrandLogo } from "./BrandLogo";
 
 export function Navbar({
   variant = "overlay",
@@ -48,18 +48,7 @@ export function Navbar({
             className="flex items-center gap-3"
             aria-label={`${site.name} home`}
           >
-            <Logo
-              className={`h-7 w-auto transition-colors ${
-                scrolled ? "text-accent" : "text-white"
-              }`}
-            />
-            <span
-              className={`font-heading text-lg font-bold tracking-tight transition-colors ${
-                scrolled ? "text-[color:var(--fg)]" : "text-white"
-              }`}
-            >
-              {site.name}
-            </span>
+            <BrandLogo dark={!scrolled} heightClass="h-9" />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">

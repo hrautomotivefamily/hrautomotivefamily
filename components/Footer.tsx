@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { navLinks, site } from "@/lib/site";
-import { Logo } from "./Logo";
+import { BrandLogo } from "./BrandLogo";
 import { Icon } from "./Icons";
 
 export function Footer() {
@@ -10,8 +10,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-3">
           <div>
             <Link href="/" className="flex items-center gap-3">
-              <Logo className="h-8 w-auto text-white" />
-              <span className="font-heading text-lg font-bold">{site.name}</span>
+              <BrandLogo dark heightClass="h-9" />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">
               {site.tagline} Halifax&apos;s family-run bodyshop for expert
