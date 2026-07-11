@@ -52,6 +52,9 @@ async function sql() {
       ssl: "require",
       max: 3,
       idle_timeout: 20,
+      // Works with Supabase's transaction pooler (pgbouncer) as well as the
+      // direct/session connection, so any connection string they copy is fine.
+      prepare: false,
     });
   }
   if (!schemaReady) {
