@@ -25,11 +25,11 @@ export type Car = {
 };
 
 /**
- * Current stock. Add a new object per car; drop its photos into
- * public/stock/<slug>/ and list them in `images` (first image is the cover).
- * Set `status` to "reserved" or "sold" to show a ribbon and dim the card.
+ * Seed stock — used to populate the database (or the local JSON file in dev)
+ * the first time the app runs. After that, listings are managed from /admin
+ * and read through lib/db.ts.
  */
-export const stock: Car[] = [
+export const seedStock: Car[] = [
   {
     slug: "toyota-aygo-x-play-68",
     make: "Toyota",
@@ -63,8 +63,13 @@ export const stock: Car[] = [
   },
 ];
 
-export function getCar(slug: string) {
-  return stock.find((c) => c.slug === slug);
+export function slugify(input: string) {
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
 }
 
 export function formatPrice(n: number) {

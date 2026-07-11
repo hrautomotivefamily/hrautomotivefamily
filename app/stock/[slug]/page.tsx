@@ -5,19 +5,18 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { StockGallery } from "@/components/StockGallery";
 import { Icon } from "@/components/Icons";
-import { getCar, stock, formatPrice, formatMileage } from "@/lib/stock";
+import { getCar, getStock } from "@/lib/db";
+import { formatPrice, formatMileage } from "@/lib/stock";
 import { site } from "@/lib/site";
 
-export function generateStaticParams() {
-  return stock.map((car) => ({ slug: car.slug }));
-}
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
-}): Metadata {
-  const car = getCar(params.slug);
+}): Promise<Metadata> {
+  const car = await getCar(params.slug);
   if (!car) return { title: "Car not found" };
   const title = `${car.title} — ${formatPrice(car.price)}`;
   const description = `${car.year} ${car.title} for sale in ${site.locality}, ${site.region}. ${car.summary}`;
@@ -34,8 +33,8 @@ const statusLabel = {
   sold: "Sold",
 } as const;
 
-export default function CarPage({ params }: { params: { slug: string } }) {
-  const car = getCar(params.slug);
+export default async function CarPage({ params }: { params: { slug: string } }) {
+  const car = await getCar(params.slug);
   if (!car) notFound();
 
   const specs = [
@@ -80,7 +79,9 @@ export default function CarPage({ params }: { params: { slug: string } }) {
     },
   };
 
-  const others = stock.filter((c) => c.slug !== car.slug && c.status !== "sold");
+  const others = (await getStock()).filter(
+    (c) => c.slug !== car.slug && c.status !== "sold"
+  );
 
   return (
     <>

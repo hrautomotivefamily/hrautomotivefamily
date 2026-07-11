@@ -4,7 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { StockCard } from "@/components/StockCard";
 import { Icon } from "@/components/Icons";
-import { stock } from "@/lib/stock";
+import { getStock } from "@/lib/db";
 import { site, areaServed } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -12,7 +12,10 @@ export const metadata: Metadata = {
   description: `Quality used cars, repaired and finished in-house by ${site.name} in Halifax, West Yorkshire. Honest descriptions and fair prices.`,
 };
 
-export default function StockPage() {
+export const dynamic = "force-dynamic";
+
+export default async function StockPage() {
+  const stock = await getStock();
   const available = stock.filter((c) => c.status !== "sold");
 
   return (

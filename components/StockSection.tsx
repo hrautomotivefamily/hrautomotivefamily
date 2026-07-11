@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { stock } from "@/lib/stock";
+import { getStock } from "@/lib/db";
 import { StockCard } from "./StockCard";
 import { Reveal } from "./Reveal";
 import { Icon } from "./Icons";
 
-export function StockSection() {
-  const cars = stock.slice(0, 3);
+export async function StockSection() {
+  const cars = (await getStock()).slice(0, 3);
 
   return (
     <section id="stock" className="relative py-24 sm:py-32">

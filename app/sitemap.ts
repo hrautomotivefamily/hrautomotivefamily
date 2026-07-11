@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { stock } from "@/lib/stock";
+import { getStock } from "@/lib/db";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://hrautomotive.co.uk";
   const now = new Date();
 
-  const carPages: MetadataRoute.Sitemap = stock.map((car) => ({
+  const cars = await getStock();
+  const carPages: MetadataRoute.Sitemap = cars.map((car) => ({
     url: `${base}/stock/${car.slug}`,
     lastModified: now,
     changeFrequency: "weekly",

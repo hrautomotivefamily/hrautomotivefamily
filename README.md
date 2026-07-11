@@ -79,6 +79,31 @@ components/              # Hero, BeforeAfter, ProcessTimeline, Services,
 lib/site.ts             # all copy & data (single source of truth)
 ```
 
+## 🔐 Admin — managing car listings
+
+Listings are managed from a password-protected dashboard at **`/admin`**
+(create, edit, delete and mark **Available · Reserved · Sold**). The public
+`Cars for Sale` pages read from the same store automatically.
+
+**Storage**
+
+- **Production (Vercel / Render):** set `DATABASE_URL` to a Postgres connection
+  string — a free database from [neon.tech](https://neon.tech) works well. The
+  `cars` table is created and seeded automatically on first run.
+- **Development / local:** no database needed. Listings are saved to a local
+  file at `.data/stock.json` (git-ignored).
+
+**Environment variables** (see `.env.example`):
+
+| Variable               | Purpose                                            |
+| ---------------------- | -------------------------------------------------- |
+| `ADMIN_PASSWORD`       | Password to sign in to `/admin` (**required**).    |
+| `ADMIN_SESSION_SECRET` | Optional secret for the session cookie.            |
+| `DATABASE_URL`         | Postgres connection string for production storage. |
+
+For local development, copy `.env.example` to `.env.local` and set at least
+`ADMIN_PASSWORD`, then visit `http://localhost:3000/admin`.
+
 ## 🔌 Wiring up before launch
 
 A few placeholders are ready to be connected:
