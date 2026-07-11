@@ -27,8 +27,8 @@ export const beforeAfterItems: BeforeAfterItem[] = [
     label: "Bodywork repair",
     tone: "navy",
     // Photos live in public/showcase/. Upload before.jpg and after.jpg there.
-    before: "/showcase/before.jpg", // damaged / mid-repair
-    after: "/showcase/after.jpg", //  finished
+    before: "/showcase/aygo-before.jpg", // damaged / mid-repair
+    after: "/showcase/aygo-after.jpg", //  finished
   },
 ];
 
