@@ -4,17 +4,66 @@ import path from "path";
 import { seedStock, type Car } from "./stock";
 
 /**
- * Storage adapter for car listings.
+ * Storage adapter for car listings. Three backends, chosen automatically:
  *
- * - Production (Vercel / Render): set DATABASE_URL to a Postgres connection
- *   string (e.g. a free Neon database). Data persists there.
- * - Development / local: no DATABASE_URL needed — listings are stored in a
- *   local JSON file at .data/stock.json (created from the seed on first run).
- *
- * Both backends expose the same async API below.
+ * 1. Supabase over HTTPS (recommended) — set SUPABASE_URL and
+ *    SUPABASE_SERVICE_ROLE_KEY. No connection string / pooler needed. Requires
+ *    a `cars` table (see supabase-schema.sql — run it once in the SQL editor).
+ * 2. Direct Postgres — set DATABASE_URL (auto-creates the table).
+ * 3. Local JSON file (.data/stock.json) — development only, when neither is set.
  */
 
-const usePg = !!process.env.DATABASE_URL;
+const useSupabase =
+  !!process.env.SUPABASE_URL && !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+const usePg = !useSupabase && !!process.env.DATABASE_URL;
+
+const NO_DB_HINT =
+  "Listings can't be saved yet. In your hosting environment set SUPABASE_URL and " +
+  "SUPABASE_SERVICE_ROLE_KEY (and run the one-time setup SQL), then redeploy.";
+
+const NO_TABLE_HINT =
+  "The `cars` table doesn't exist yet. Open Supabase → SQL Editor and run the " +
+  "setup SQL from supabase-schema.sql, then try again.";
+
+/* ------------------------------------------------------------------ */
+/* Supabase (HTTPS) backend                                            */
+/* ------------------------------------------------------------------ */
+
+type SupabaseClient = import("@supabase/supabase-js").SupabaseClient;
+let sbClient: SupabaseClient | null = null;
+
+async function sb(): Promise<SupabaseClient> {
+  if (!sbClient) {
+    const { createClient } = await import("@supabase/supabase-js");
+    sbClient = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { persistSession: false } }
+    );
+  }
+  return sbClient;
+}
+
+function isMissingTable(err: { code?: string; message?: string } | null) {
+  if (!err) return false;
+  return (
+    err.code === "PGRST205" ||
+    err.code === "42P01" ||
+    /relation .*cars.* does not exist|could not find the table/i.test(
+      err.message ?? ""
+    )
+  );
+}
+
+async function supabaseSeedIfEmpty() {
+  const client = await sb();
+  await client
+    .from("cars")
+    .upsert(
+      seedStock.map((c) => ({ slug: c.slug, data: c })),
+      { onConflict: "slug" }
+    );
+}
 
 /* ------------------------------------------------------------------ */
 /* JSON file backend                                                   */
@@ -23,22 +72,15 @@ const usePg = !!process.env.DATABASE_URL;
 const DATA_DIR = path.join(process.cwd(), ".data");
 const FILE = path.join(DATA_DIR, "stock.json");
 
-const NO_DB_HINT =
-  "Listings can't be saved on this host without a database. Add a DATABASE_URL " +
-  "(e.g. a free Supabase Postgres) in your hosting environment variables, then redeploy.";
-
 async function fileReadAll(): Promise<Car[]> {
   try {
     const raw = await fs.readFile(FILE, "utf8");
     return JSON.parse(raw) as Car[];
   } catch {
-    // First run, or a read-only host (e.g. Vercel without a database). Try to
-    // seed the file, but never crash the page if the filesystem is read-only —
-    // just serve the seed data from memory.
     try {
       await fileWriteAll(seedStock);
     } catch {
-      /* read-only filesystem — fine, fall back to in-memory seed */
+      /* read-only filesystem — serve seed from memory */
     }
     return [...seedStock];
   }
@@ -49,7 +91,6 @@ async function fileWriteAll(cars: Car[]): Promise<void> {
   await fs.writeFile(FILE, JSON.stringify(cars, null, 2), "utf8");
 }
 
-/** Persist a change to the file store, surfacing a clear message if the host is read-only. */
 async function fileMutate(next: Car[]): Promise<void> {
   try {
     await fileWriteAll(next);
@@ -72,8 +113,6 @@ async function sql() {
       ssl: "require",
       max: 3,
       idle_timeout: 20,
-      // Works with Supabase's transaction pooler (pgbouncer) as well as the
-      // direct/session connection, so any connection string they copy is fine.
       prepare: false,
     });
   }
@@ -106,6 +145,28 @@ async function sql() {
 /* ------------------------------------------------------------------ */
 
 export async function getStock(): Promise<Car[]> {
+  if (useSupabase) {
+    try {
+      const client = await sb();
+      const { data, error } = await client
+        .from("cars")
+        .select("data")
+        .order("created_at", { ascending: false });
+      if (error) {
+        if (isMissingTable(error)) return [...seedStock];
+        console.error("Supabase getStock error:", error.message);
+        return [...seedStock];
+      }
+      if (!data || data.length === 0) {
+        await supabaseSeedIfEmpty();
+        return [...seedStock];
+      }
+      return data.map((r) => (r as { data: Car }).data);
+    } catch (e) {
+      console.error("Supabase getStock exception:", e);
+      return [...seedStock];
+    }
+  }
   if (usePg) {
     const db = await sql();
     const rows = await db`SELECT data FROM cars ORDER BY created_at DESC`;
@@ -115,6 +176,19 @@ export async function getStock(): Promise<Car[]> {
 }
 
 export async function getCar(slug: string): Promise<Car | undefined> {
+  if (useSupabase) {
+    const client = await sb();
+    const { data, error } = await client
+      .from("cars")
+      .select("data")
+      .eq("slug", slug)
+      .maybeSingle();
+    if (error) {
+      if (isMissingTable(error)) return seedStock.find((c) => c.slug === slug);
+      throw new Error(error.message);
+    }
+    return (data as { data: Car } | null)?.data;
+  }
   if (usePg) {
     const db = await sql();
     const rows = await db`SELECT data FROM cars WHERE slug = ${slug} LIMIT 1`;
@@ -125,6 +199,12 @@ export async function getCar(slug: string): Promise<Car | undefined> {
 }
 
 export async function createCar(car: Car): Promise<void> {
+  if (useSupabase) {
+    const client = await sb();
+    const { error } = await client.from("cars").insert({ slug: car.slug, data: car });
+    if (error) throw new Error(isMissingTable(error) ? NO_TABLE_HINT : error.message);
+    return;
+  }
   if (usePg) {
     const db = await sql();
     await db`
@@ -138,9 +218,17 @@ export async function createCar(car: Car): Promise<void> {
 }
 
 export async function updateCar(slug: string, car: Car): Promise<void> {
+  if (useSupabase) {
+    const client = await sb();
+    const { error } = await client
+      .from("cars")
+      .update({ slug: car.slug, data: car })
+      .eq("slug", slug);
+    if (error) throw new Error(isMissingTable(error) ? NO_TABLE_HINT : error.message);
+    return;
+  }
   if (usePg) {
     const db = await sql();
-    // handle slug rename + data update
     await db`
       UPDATE cars SET slug = ${car.slug}, data = ${db.json(
         car as unknown as import("postgres").JSONValue
@@ -155,6 +243,12 @@ export async function updateCar(slug: string, car: Car): Promise<void> {
 }
 
 export async function deleteCar(slug: string): Promise<void> {
+  if (useSupabase) {
+    const client = await sb();
+    const { error } = await client.from("cars").delete().eq("slug", slug);
+    if (error) throw new Error(isMissingTable(error) ? NO_TABLE_HINT : error.message);
+    return;
+  }
   if (usePg) {
     const db = await sql();
     await db`DELETE FROM cars WHERE slug = ${slug}`;
