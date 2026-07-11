@@ -38,7 +38,7 @@ export default async function CarPage({ params }: { params: { slug: string } }) 
   if (!car) notFound();
 
   const specs = [
-    { label: "Year", value: `${car.year} (${car.plateAge})` },
+    { label: "Year", value: car.plateAge ? `${car.year} (${car.plateAge})` : `${car.year}` },
     { label: "Mileage", value: formatMileage(car.mileage) },
     { label: "Engine", value: car.engine },
     { label: "Transmission", value: car.transmission },
@@ -110,12 +110,14 @@ export default async function CarPage({ params }: { params: { slug: string } }) 
             <div>
               <StockGallery car={car} />
 
-              <div className="mt-10">
-                <h2 className="font-heading text-2xl font-bold">Overview</h2>
-                <p className="mt-4 text-lg leading-relaxed text-muted">
-                  {car.summary}
-                </p>
-              </div>
+              {car.summary && (
+                <div className="mt-10">
+                  <h2 className="font-heading text-2xl font-bold">Overview</h2>
+                  <p className="mt-4 text-lg leading-relaxed text-muted">
+                    {car.summary}
+                  </p>
+                </div>
+              )}
 
               {/* spec table */}
               <div className="mt-10">

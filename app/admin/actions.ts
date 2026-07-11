@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
-  checkPassword,
+  checkCredentials,
   createSession,
   destroySession,
   isAuthed,
@@ -21,10 +21,11 @@ export async function login(
   _prev: FormState,
   formData: FormData
 ): Promise<FormState> {
+  const username = String(formData.get("username") ?? "");
   const password = String(formData.get("password") ?? "");
   const from = String(formData.get("from") ?? "/admin");
-  if (!checkPassword(password)) {
-    return { error: "Incorrect password." };
+  if (!checkCredentials(username, password)) {
+    return { error: "Incorrect username or password." };
   }
   await createSession();
   redirect(from.startsWith("/admin") ? from : "/admin");

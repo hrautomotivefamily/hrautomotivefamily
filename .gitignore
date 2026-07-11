@@ -35,3 +35,6 @@ next-env.d.ts
 
 # local listings data (dev JSON store)
 /.data
+
+# locally uploaded photos (dev image store)
+/public/uploads

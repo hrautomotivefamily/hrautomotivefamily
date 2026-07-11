@@ -5,7 +5,13 @@ import { Reveal } from "./Reveal";
 import { Icon } from "./Icons";
 
 export async function StockSection() {
-  const cars = (await getStock()).slice(0, 3);
+  const all = await getStock();
+  // show available/reserved first, fall back to sold to fill the row
+  const ordered = [
+    ...all.filter((c) => c.status !== "sold"),
+    ...all.filter((c) => c.status === "sold"),
+  ];
+  const cars = ordered.slice(0, 3);
 
   return (
     <section id="stock" className="relative py-24 sm:py-32">

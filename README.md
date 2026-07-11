@@ -93,13 +93,27 @@ Listings are managed from a password-protected dashboard at **`/admin`**
 - **Development / local:** no database needed. Listings are saved to a local
   file at `.data/stock.json` (git-ignored).
 
+**Photo uploads**
+
+The new-listing form uploads photos directly. In production they go to a
+**Supabase Storage** bucket (public CDN URLs); in development they're written to
+`public/uploads/`. Credentials are read server-side only and never sent to the
+browser.
+
 **Environment variables** (see `.env.example`):
 
-| Variable               | Purpose                                            |
-| ---------------------- | -------------------------------------------------- |
-| `ADMIN_PASSWORD`       | Password to sign in to `/admin` (**required**).    |
-| `ADMIN_SESSION_SECRET` | Optional secret for the session cookie.            |
-| `DATABASE_URL`         | Postgres connection string for production storage. |
+| Variable                    | Purpose                                                     |
+| --------------------------- | ----------------------------------------------------------- |
+| `ADMIN_USERNAME`            | Admin username (optional — defaults to `admin`).            |
+| `ADMIN_PASSWORD`            | Admin password (**required**).                              |
+| `ADMIN_SESSION_SECRET`      | Optional secret for signing the session cookie.            |
+| `DATABASE_URL`              | Postgres connection string (e.g. Supabase) for listings.   |
+| `SUPABASE_URL`              | Supabase project URL (for photo uploads).                  |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service-role key — server-only, keep private.     |
+| `SUPABASE_BUCKET`           | Public storage bucket name (default `car-photos`).         |
+
+Credentials live only in these server-side environment variables — never in the
+code or the browser, so they're not visible via "inspect element".
 
 For local development, copy `.env.example` to `.env.local` and set at least
 `ADMIN_PASSWORD`, then visit `http://localhost:3000/admin`.

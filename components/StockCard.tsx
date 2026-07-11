@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CarPhoto } from "./CarPhoto";
+import { SoldStamp } from "./SoldStamp";
 import { Icon } from "./Icons";
 import { formatMileage, formatPrice, type Car } from "@/lib/stock";
 
@@ -24,19 +25,19 @@ export function StockCard({ car, priority = false }: { car: Car; priority?: bool
       className="card-surface group relative flex h-full flex-col overflow-hidden rounded-xl2 shadow-soft transition-all duration-500 hover:-translate-y-1.5 hover:shadow-soft-lg"
     >
       <div className="relative aspect-[16/10] overflow-hidden">
-        <div
-          className={`absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105 ${
-            sold ? "opacity-70" : ""
-          }`}
-        >
+        <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
           <CarPhoto car={car} priority={priority} className="object-cover" />
         </div>
 
-        <span
-          className={`absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-xs font-semibold tracking-wide shadow-soft ${statusStyles[car.status]}`}
-        >
-          {statusLabel[car.status]}
-        </span>
+        {sold && <SoldStamp size="md" />}
+
+        {!sold && (
+          <span
+            className={`absolute left-3 top-3 z-10 rounded-full px-3 py-1 text-xs font-semibold tracking-wide shadow-soft ${statusStyles[car.status]}`}
+          >
+            {statusLabel[car.status]}
+          </span>
+        )}
 
         <span className="absolute bottom-3 right-3 z-10 rounded-full bg-navy/90 px-3.5 py-1.5 font-heading text-sm font-bold text-white shadow-soft backdrop-blur-sm">
           {formatPrice(car.price)}

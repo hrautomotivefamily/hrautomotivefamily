@@ -10,16 +10,22 @@ export async function isAuthed(): Promise<boolean> {
   return isValidSession(value);
 }
 
-/** Verify a submitted password against ADMIN_PASSWORD. */
-export function checkPassword(password: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) return false;
-  if (password.length !== expected.length) return false;
+function safeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
   let diff = 0;
-  for (let i = 0; i < expected.length; i++) {
-    diff |= password.charCodeAt(i) ^ expected.charCodeAt(i);
-  }
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return diff === 0;
+}
+
+/** Verify submitted credentials against ADMIN_USERNAME / ADMIN_PASSWORD. */
+export function checkCredentials(username: string, password: string): boolean {
+  const expectedPass = process.env.ADMIN_PASSWORD;
+  if (!expectedPass) return false;
+  // Username is optional — defaults to "admin" if ADMIN_USERNAME isn't set.
+  const expectedUser = process.env.ADMIN_USERNAME || "admin";
+  const passOk = safeEqual(password, expectedPass);
+  const userOk = safeEqual(username.trim(), expectedUser);
+  return userOk && passOk;
 }
 
 export async function createSession(): Promise<void> {

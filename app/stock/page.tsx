@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { StockCard } from "@/components/StockCard";
+import { StockBrowser } from "@/components/StockBrowser";
 import { Icon } from "@/components/Icons";
 import { getStock } from "@/lib/db";
 import { site, areaServed } from "@/lib/site";
@@ -16,7 +16,6 @@ export const dynamic = "force-dynamic";
 
 export default async function StockPage() {
   const stock = await getStock();
-  const available = stock.filter((c) => c.status !== "sold");
 
   return (
     <>
@@ -47,17 +46,8 @@ export default async function StockPage() {
         {/* grid */}
         <section className="py-16 sm:py-20">
           <div className="container-px">
-            {available.length > 0 ? (
-              <>
-                <p className="mb-8 text-sm font-medium text-muted">
-                  {available.length} {available.length === 1 ? "car" : "cars"} available
-                </p>
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {stock.map((car, i) => (
-                    <StockCard key={car.slug} car={car} priority={i < 3} />
-                  ))}
-                </div>
-              </>
+            {stock.length > 0 ? (
+              <StockBrowser cars={stock} />
             ) : (
               <div className="card-surface mx-auto max-w-xl rounded-xl2 p-12 text-center shadow-soft">
                 <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-navy text-white">

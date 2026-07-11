@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CarPhoto } from "./CarPhoto";
+import { SoldStamp } from "./SoldStamp";
 import { Icon } from "./Icons";
 import type { Car } from "@/lib/stock";
 
@@ -42,7 +43,8 @@ export function StockGallery({ car }: { car: Car }) {
           sizes="(max-width: 1024px) 100vw, 60vw"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <span className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-navy/85 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
+        {car.status === "sold" && <SoldStamp size="lg" />}
+        <span className="absolute bottom-3 right-3 z-30 flex items-center gap-1.5 rounded-full bg-navy/85 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
           <Icon name="sparkle" width={14} height={14} />
           {hasRealPhotos ? "Tap to enlarge" : "Photos coming soon"}
         </span>

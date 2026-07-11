@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { saveCar } from "@/app/admin/actions";
 import type { FormState } from "@/lib/form";
 import { Icon } from "@/components/Icons";
+import { ImageUploader } from "./ImageUploader";
 import type { Car } from "@/lib/stock";
 
 function SaveButton({ editing }: { editing: boolean }) {
@@ -84,6 +86,9 @@ function Select({
 export function CarForm({ car }: { car?: Car }) {
   const [state, formAction] = useFormState<FormState, FormData>(saveCar, {});
   const editing = !!car;
+  const [uploadFolder] = useState(
+    () => car?.slug || `new-${Math.random().toString(36).slice(2, 8)}`
+  );
 
   return (
     <form action={formAction} className="space-y-8">
@@ -163,20 +168,14 @@ export function CarForm({ car }: { car?: Car }) {
             />
             <span className="mt-1 block text-xs text-muted">One feature per line.</span>
           </label>
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium">Photo URLs / paths</span>
-            <textarea
+          <div>
+            <span className="mb-1.5 block text-sm font-medium">Photos</span>
+            <ImageUploader
               name="images"
-              rows={3}
-              defaultValue={car?.images.join("\n")}
-              placeholder={"One per line, e.g.\n/stock/toyota-aygo-x-play-68/1.jpg"}
-              className={inputCls}
+              initial={car?.images ?? []}
+              folder={uploadFolder}
             />
-            <span className="mt-1 block text-xs text-muted">
-              One per line — first is the cover. Leave blank to show the branded
-              placeholder. (Photo uploads coming soon.)
-            </span>
-          </label>
+          </div>
         </div>
       </section>
 
