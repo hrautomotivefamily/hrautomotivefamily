@@ -9,8 +9,8 @@ export function Footer() {
       <div className="container-px py-16">
         <div className="grid gap-12 md:grid-cols-3">
           <div>
-            <Link href="#top" className="flex items-center gap-3">
-              <Logo className="h-9 w-9 text-white" />
+            <Link href="/" className="flex items-center gap-3">
+              <Logo className="h-8 w-auto text-white" />
               <span className="font-heading text-lg font-bold">{site.name}</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">

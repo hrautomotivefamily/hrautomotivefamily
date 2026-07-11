@@ -49,7 +49,7 @@ export function Navbar({
             aria-label={`${site.name} home`}
           >
             <Logo
-              className={`h-9 w-9 transition-colors ${
+              className={`h-7 w-auto transition-colors ${
                 scrolled ? "text-accent" : "text-white"
               }`}
             />

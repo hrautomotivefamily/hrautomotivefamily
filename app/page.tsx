@@ -1,5 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { Highlights } from "@/components/Highlights";
+import { MakesMarquee } from "@/components/MakesMarquee";
 import { BeforeAfter } from "@/components/BeforeAfter";
 import { ProcessTimeline } from "@/components/ProcessTimeline";
 import { Services } from "@/components/Services";
@@ -49,9 +51,11 @@ export default function Home() {
       <Navbar />
       <main id="main">
         <Hero />
+        <Highlights />
         <BeforeAfter />
         <ProcessTimeline />
         <Services />
+        <MakesMarquee />
         <StockSection />
         <Gallery />
         <Testimonials />

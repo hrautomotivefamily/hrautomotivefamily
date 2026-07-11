@@ -45,6 +45,19 @@ export function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-navy/40" />
+        {/* soft accent glows for depth */}
+        <motion.div
+          aria-hidden
+          animate={reduce ? {} : { opacity: [0.35, 0.6, 0.35], scale: [1, 1.08, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          className="pointer-events-none absolute -left-24 top-1/3 h-96 w-96 rounded-full bg-accent/25 blur-[120px]"
+        />
+        <motion.div
+          aria-hidden
+          animate={reduce ? {} : { opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="pointer-events-none absolute bottom-0 right-1/4 h-80 w-80 rounded-full bg-accent/20 blur-[120px]"
+        />
       </div>
 
       <div className="container-px relative z-10 grid w-full items-center gap-12 pt-28 pb-20 lg:grid-cols-12">
