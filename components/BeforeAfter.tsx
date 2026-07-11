@@ -109,6 +109,8 @@ function Slider({ item }: { item: BeforeAfterItem }) {
 
 export function BeforeAfter() {
   const [active, setActive] = useState(0);
+  const showTabs = beforeAfterItems.length > 1;
+  const item = beforeAfterItems[active] ?? beforeAfterItems[0];
 
   return (
     <section id="work" className="relative py-24 sm:py-32">
@@ -125,24 +127,26 @@ export function BeforeAfter() {
         </Reveal>
 
         <Reveal delay={0.1} className="mx-auto mt-14 max-w-4xl">
-          <Slider item={beforeAfterItems[active]} key={beforeAfterItems[active].id} />
+          <Slider item={item} key={item.id} />
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            {beforeAfterItems.map((ex, i) => (
-              <button
-                key={ex.id}
-                type="button"
-                onClick={() => setActive(i)}
-                className={`rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
-                  active === i
-                    ? "border-accent bg-accent text-white shadow-soft"
-                    : "border-hair text-muted hover:border-accent hover:text-accent"
-                }`}
-              >
-                {ex.label}
-              </button>
-            ))}
-          </div>
+          {showTabs && (
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              {beforeAfterItems.map((ex, i) => (
+                <button
+                  key={ex.id}
+                  type="button"
+                  onClick={() => setActive(i)}
+                  className={`rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
+                    active === i
+                      ? "border-accent bg-accent text-white shadow-soft"
+                      : "border-hair text-muted hover:border-accent hover:text-accent"
+                  }`}
+                >
+                  {ex.label}
+                </button>
+              ))}
+            </div>
+          )}
         </Reveal>
       </div>
     </section>

@@ -22,9 +22,14 @@ export type BeforeAfterItem = {
 };
 
 export const beforeAfterItems: BeforeAfterItem[] = [
-  { id: "ex1", label: "Front wing collision repair", tone: "navy" },
-  { id: "ex2", label: "Full panel respray", tone: "charcoal" },
-  { id: "ex3", label: "Scratch & dent restoration", tone: "slate" },
+  {
+    id: "bodywork",
+    label: "Bodywork repair",
+    tone: "navy",
+    // Set these to your photos (upload to public/showcase/ first):
+    before: "", // e.g. "/showcase/bodywork-before.jpg"  (damaged)
+    after: "", //  e.g. "/showcase/bodywork-after.jpg"   (finished)
+  },
 ];
 
 export type GalleryItem = {
