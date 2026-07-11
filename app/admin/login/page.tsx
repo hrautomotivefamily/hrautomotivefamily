@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LoginForm } from "@/components/admin/LoginForm";
-import { Logo } from "@/components/Logo";
+import { BrandLogo } from "@/components/BrandLogo";
 import { adminConfigured } from "@/lib/auth";
 
 export const metadata: Metadata = {
@@ -24,8 +24,7 @@ export default function LoginPage({
     >
       <div className="w-full max-w-sm">
         <Link href="/" className="mb-8 flex items-center justify-center gap-3">
-          <Logo className="h-8 w-auto text-accent" />
-          <span className="font-heading text-lg font-bold">HR Automotive</span>
+          <BrandLogo dark={false} heightClass="h-9" />
         </Link>
 
         <div className="card-surface rounded-xl3 p-8 shadow-soft-lg">

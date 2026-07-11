@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CarScene } from "./CarScene";
+import { Placeholder } from "./Placeholder";
 import type { Car } from "@/lib/stock";
 
 /**
@@ -48,12 +48,5 @@ export function CarPhoto({
     );
   }
 
-  return (
-    <CarScene
-      variant="repaired"
-      tone={car.tone}
-      seed={`${car.slug}-${index}`}
-      className={className ?? "h-full w-full"}
-    />
-  );
+  return <Placeholder tone={car.tone} className={className} />;
 }

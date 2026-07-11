@@ -1,57 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { Logo } from "./Logo";
 
 /**
- * Shows the real HR Automotive logo image when it has been uploaded to
- * public/brand/, otherwise falls back to the SVG car mark + wordmark so the
- * site always looks complete.
+ * Shows the real HR Automotive logo image once it has been uploaded to
+ * public/brand/, otherwise a clean wordmark. The wordmark is shown by default
+ * and only replaced when the image actually loads, so a missing file never
+ * flashes a broken image.
  *
- * Upload BOTH of these (via GitHub → Add file → Upload files):
- *   public/brand/logo.png        — full-colour logo (for light backgrounds)
- *   public/brand/logo-white.png  — white/knockout logo (for the navy header/footer)
- *
- * When the image is present it replaces the "HR Automotive" text automatically.
+ * Upload (via GitHub → Add file → Upload files):
+ *   public/brand/logo.png        — full-colour logo (light backgrounds)
+ *   public/brand/logo-white.png  — white logo (dark navy header/footer)
  */
 export function BrandLogo({
   dark = false,
   heightClass = "h-9",
-  markClass,
-  textClass,
 }: {
   /** true on a dark background (navy hero / footer) — uses the white logo. */
   dark?: boolean;
   heightClass?: string;
-  markClass?: string;
-  textClass?: string;
 }) {
-  const [failed, setFailed] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const src = dark ? "/brand/logo-white.png" : "/brand/logo.png";
 
-  if (!failed) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
+  return (
+    <span className="inline-flex items-center">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt="HR Automotive"
-        onError={() => setFailed(true)}
-        className={`${heightClass} w-auto`}
+        onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(false)}
+        className={`${heightClass} w-auto ${loaded ? "" : "hidden"}`}
       />
-    );
-  }
-
-  // Fallback: SVG car mark + wordmark
-  return (
-    <span className="flex items-center gap-3">
-      <Logo className={`h-7 w-auto ${markClass ?? (dark ? "text-white" : "text-accent")}`} />
-      <span
-        className={`font-heading text-lg font-bold tracking-tight ${
-          textClass ?? (dark ? "text-white" : "text-[color:var(--fg)]")
-        }`}
-      >
-        HR Automotive
-      </span>
+      {!loaded && (
+        <span
+          className={`font-heading text-xl font-extrabold tracking-tight ${
+            dark ? "text-white" : "text-[color:var(--fg)]"
+          }`}
+        >
+          <span className={dark ? "text-white" : "text-accent"}>HR</span> Automotive
+        </span>
+      )}
     </span>
   );
 }

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { site } from "@/lib/site";
-import { CarScene } from "./CarScene";
+import { HeroBackdrop } from "./HeroBackdrop";
 import { Icon } from "./Icons";
 
 const stats = [
@@ -37,12 +37,7 @@ export function Hero() {
     >
       {/* backdrop artwork */}
       <div className="absolute inset-0">
-        <CarScene
-          variant="repaired"
-          tone="midnight"
-          seed="hero"
-          className="h-full w-full object-cover opacity-90"
-        />
+        <HeroBackdrop />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/85 to-navy/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-navy/40" />
         {/* soft accent glows for depth */}

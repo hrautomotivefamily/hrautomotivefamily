@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CarScene } from "./CarScene";
+import { Placeholder } from "./Placeholder";
 import { Icon } from "./Icons";
 import { Reveal } from "./Reveal";
 import { galleryItems as items, type GalleryItem } from "@/lib/showcase";
@@ -10,24 +10,15 @@ import { galleryItems as items, type GalleryItem } from "@/lib/showcase";
 function GalleryMedia({
   item,
   className,
-  seedSuffix = "",
 }: {
   item: GalleryItem;
   className?: string;
-  seedSuffix?: string;
 }) {
   if (item.src) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={item.src} alt={item.title} className={className ?? "h-full w-full object-cover"} />;
   }
-  return (
-    <CarScene
-      variant="repaired"
-      tone={item.tone}
-      seed={`${item.id}${seedSuffix}`}
-      className={className ?? "h-full w-full"}
-    />
-  );
+  return <Placeholder tone={item.tone} className={className} />;
 }
 
 export function Gallery() {
@@ -144,7 +135,7 @@ export function Gallery() {
               className="w-full max-w-4xl"
             >
               <div className="aspect-[16/10] w-full overflow-hidden rounded-xl2 shadow-soft-lg">
-                <GalleryMedia item={items[open]} seedSuffix="-lb" className="h-full w-full object-cover" />
+                <GalleryMedia item={items[open]} className="h-full w-full object-cover" />
               </div>
               <figcaption className="mt-4 text-center font-heading text-lg font-semibold text-white">
                 {items[open].title}

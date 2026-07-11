@@ -84,6 +84,18 @@ export function Footer() {
           </p>
           <p>{site.tagline}</p>
         </div>
+
+        <div className="mt-6 text-center text-xs text-white/45">
+          Website created by{" "}
+          <a
+            href="https://foldscapes.onrender.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-white/70 underline decoration-white/20 underline-offset-2 transition-colors hover:text-white"
+          >
+            Foldscapes
+          </a>
+        </div>
       </div>
     </footer>
   );

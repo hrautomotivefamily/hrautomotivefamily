@@ -5,7 +5,7 @@ import { adminConfigured } from "@/lib/auth";
 import { formatPrice, formatMileage, type StockStatus } from "@/lib/stock";
 import { CarPhoto } from "@/components/CarPhoto";
 import { Icon } from "@/components/Icons";
-import { Logo } from "@/components/Logo";
+import { BrandLogo } from "@/components/BrandLogo";
 import { ConfirmButton } from "@/components/admin/ConfirmButton";
 import { logout, removeCar, quickStatus } from "./actions";
 
@@ -25,7 +25,7 @@ const statusStyles: Record<StockStatus, string> = {
 export default async function AdminPage({
   searchParams,
 }: {
-  searchParams: { saved?: string; deleted?: string };
+  searchParams: { saved?: string; deleted?: string; updated?: string; error?: string };
 }) {
   const cars = await getStock();
   const configured = adminConfigured();
@@ -36,8 +36,8 @@ export default async function AdminPage({
       <header className="border-b border-hair bg-[color:var(--bg)]">
         <div className="container-px flex h-[72px] items-center justify-between">
           <div className="flex items-center gap-3">
-            <Logo className="h-7 w-auto text-accent" />
-            <span className="font-heading font-bold">Admin</span>
+            <BrandLogo dark={false} heightClass="h-7" />
+            <span className="font-heading font-bold text-muted">/ Admin</span>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/" target="_blank" className="btn-outline">
@@ -77,10 +77,21 @@ export default async function AdminPage({
           </p>
         )}
 
-        {(searchParams.saved || searchParams.deleted) && (
+        {(searchParams.saved || searchParams.deleted || searchParams.updated) && (
           <p className="mt-6 flex items-center gap-2 rounded-xl2 bg-success/10 px-4 py-3 text-sm text-success">
             <Icon name="check" width={16} height={16} />
-            {searchParams.saved ? "Listing saved." : "Listing deleted."}
+            {searchParams.saved
+              ? "Listing saved."
+              : searchParams.deleted
+                ? "Listing deleted."
+                : "Listing updated."}
+          </p>
+        )}
+
+        {searchParams.error && (
+          <p className="mt-6 flex items-start gap-2 rounded-xl2 border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-600 dark:text-red-400">
+            <Icon name="close" width={16} height={16} className="mt-0.5 shrink-0" />
+            {searchParams.error}
           </p>
         )}
 

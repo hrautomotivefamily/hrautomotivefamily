@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { site } from "@/lib/site";
-import { Logo } from "./Logo";
+import { BrandLogo } from "./BrandLogo";
 import { Icon } from "./Icons";
 import { QRCode } from "./QRCode";
 import { ThemeToggle } from "./ThemeToggle";
@@ -29,8 +29,7 @@ export function BusinessCards() {
       {/* top bar */}
       <div className="container-px flex h-[72px] items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <Logo className="h-6 w-auto text-accent" />
-          <span className="font-heading font-bold">{site.name}</span>
+          <BrandLogo dark={false} heightClass="h-7" />
         </Link>
         <div className="flex items-center gap-3">
           <ThemeToggle />
@@ -69,15 +68,10 @@ export function BusinessCards() {
               />
               <div className="relative flex h-full flex-col justify-between p-7 sm:p-8">
                 <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-3">
-                    <Logo className="h-9 w-auto text-navy" />
-                    <div>
-                      <div className="font-heading text-xl font-extrabold leading-none text-navy">
-                        HR Automotive
-                      </div>
-                      <div className="mt-1.5 text-[11px] font-medium tracking-wide text-charcoal">
-                        Family Run. Professionally Done.
-                      </div>
+                  <div>
+                    <BrandLogo dark={false} heightClass="h-10" />
+                    <div className="mt-2 text-[11px] font-medium tracking-wide text-charcoal">
+                      Family Run. Professionally Done.
                     </div>
                   </div>
                 </div>
@@ -117,7 +111,7 @@ export function BusinessCards() {
               <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-accent/20 blur-2xl" />
               <div className="relative flex h-full items-center justify-between gap-6 p-7 sm:p-8">
                 <div className="flex-1">
-                  <Logo className="h-8 w-auto text-white" />
+                  <BrandLogo dark heightClass="h-8" />
                   <div className="mt-4 font-heading text-lg font-bold leading-tight text-white">
                     Scan to Get a<br />Free Quote
                   </div>

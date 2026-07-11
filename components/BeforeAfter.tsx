@@ -1,29 +1,27 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { CarScene } from "./CarScene";
+import { Placeholder } from "./Placeholder";
 import { Reveal } from "./Reveal";
 import { Icon } from "./Icons";
 import { beforeAfterItems, type BeforeAfterItem } from "@/lib/showcase";
 
 function Layer({
   src,
-  fallbackVariant,
   tone,
-  seed,
   alt,
+  dim = false,
 }: {
   src?: string;
-  fallbackVariant: "repaired" | "damaged";
   tone: BeforeAfterItem["tone"];
-  seed: string;
   alt: string;
+  dim?: boolean;
 }) {
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element
     return <img src={src} alt={alt} className="h-full w-full object-cover" />;
   }
-  return <CarScene variant={fallbackVariant} tone={tone} seed={seed} className="h-full w-full" />;
+  return <Placeholder tone={tone} dim={dim} />;
 }
 
 function Slider({ item }: { item: BeforeAfterItem }) {
@@ -69,7 +67,7 @@ function Slider({ item }: { item: BeforeAfterItem }) {
     >
       {/* AFTER (repaired) — full background */}
       <div className="pointer-events-none absolute inset-0">
-        <Layer src={item.after} fallbackVariant="repaired" tone={item.tone} seed={`${item.id}-after`} alt={`${item.label} — after`} />
+        <Layer src={item.after} tone={item.tone} alt={`${item.label} — after`} />
         <span className="absolute right-4 top-4 rounded-full bg-success/90 px-3 py-1 text-xs font-semibold tracking-wide text-white shadow-soft">
           After
         </span>
@@ -80,7 +78,7 @@ function Slider({ item }: { item: BeforeAfterItem }) {
         className="pointer-events-none absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
       >
-        <Layer src={item.before} fallbackVariant="damaged" tone={item.tone} seed={`${item.id}-before`} alt={`${item.label} — before`} />
+        <Layer src={item.before} tone={item.tone} alt={`${item.label} — before`} dim />
         <span className="absolute left-4 top-4 rounded-full bg-charcoal/85 px-3 py-1 text-xs font-semibold tracking-wide text-white shadow-soft">
           Before
         </span>

@@ -148,29 +148,40 @@ export async function saveCar(
 export async function removeCar(formData: FormData): Promise<void> {
   await requireAuth();
   const slug = String(formData.get("slug") ?? "").trim();
+  let error: string | undefined;
   if (slug) {
-    await deleteCar(slug);
-    revalidatePath("/");
-    revalidatePath("/stock");
-    revalidatePath(`/stock/${slug}`);
-    revalidatePath("/admin");
+    try {
+      await deleteCar(slug);
+      revalidatePath("/");
+      revalidatePath("/stock");
+      revalidatePath(`/stock/${slug}`);
+      revalidatePath("/admin");
+    } catch (e) {
+      error = e instanceof Error ? e.message : "Could not delete the listing.";
+    }
   }
-  redirect("/admin?deleted=1");
+  // redirect() throws by design, so it must live outside the try/catch above
+  redirect(error ? `/admin?error=${encodeURIComponent(error)}` : "/admin?deleted=1");
 }
 
 export async function quickStatus(formData: FormData): Promise<void> {
   await requireAuth();
   const slug = String(formData.get("slug") ?? "").trim();
   const status = String(formData.get("status") ?? "") as StockStatus;
+  let error: string | undefined;
   if (slug && STATUSES.includes(status)) {
-    const car = await getCar(slug);
-    if (car) {
-      await updateCar(slug, { ...car, status });
-      revalidatePath("/");
-      revalidatePath("/stock");
-      revalidatePath(`/stock/${slug}`);
-      revalidatePath("/admin");
+    try {
+      const car = await getCar(slug);
+      if (car) {
+        await updateCar(slug, { ...car, status });
+        revalidatePath("/");
+        revalidatePath("/stock");
+        revalidatePath(`/stock/${slug}`);
+        revalidatePath("/admin");
+      }
+    } catch (e) {
+      error = e instanceof Error ? e.message : "Could not update the listing.";
     }
   }
-  redirect("/admin");
+  redirect(error ? `/admin?error=${encodeURIComponent(error)}` : "/admin?updated=1");
 }
