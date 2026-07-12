@@ -8,8 +8,18 @@ import {
   destroySession,
   isAuthed,
 } from "@/lib/auth";
-import { createCar, updateCar, deleteCar, slugExists, getCar } from "@/lib/db";
+import {
+  createCar,
+  updateCar,
+  deleteCar,
+  slugExists,
+  getCar,
+  addGalleryItems,
+  updateGalleryItem,
+  deleteGalleryItem,
+} from "@/lib/db";
 import { slugify, type Car, type StockStatus } from "@/lib/stock";
+import type { GalleryItem } from "@/lib/showcase";
 import type { FormState } from "@/lib/form";
 
 const STATUSES: StockStatus[] = ["available", "reserved", "sold"];
@@ -162,6 +172,68 @@ export async function removeCar(formData: FormData): Promise<void> {
   }
   // redirect() throws by design, so it must live outside the try/catch above
   redirect(error ? `/admin?error=${encodeURIComponent(error)}` : "/admin?deleted=1");
+}
+
+/* ----------------------------- gallery -------------------------- */
+
+function galleryId() {
+  return `g-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+}
+
+export async function addGalleryImages(
+  images: { src: string; title?: string }[]
+): Promise<FormState> {
+  if (!(await isAuthed())) return { error: "Not authorised." };
+  const items: GalleryItem[] = images
+    .filter((i) => i.src)
+    .map((i) => ({
+      id: galleryId(),
+      title: (i.title ?? "").trim() || "Recent work",
+      tone: "navy",
+      span: "",
+      src: i.src,
+    }));
+  if (items.length === 0) return { error: "No photos to add." };
+  try {
+    await addGalleryItems(items);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Could not add photos." };
+  }
+  revalidatePath("/");
+  revalidatePath("/admin/gallery");
+  return { ok: true };
+}
+
+export async function renameGalleryImage(formData: FormData): Promise<void> {
+  await requireAuth();
+  const id = String(formData.get("id") ?? "").trim();
+  const title = String(formData.get("title") ?? "").trim();
+  if (id) {
+    try {
+      await updateGalleryItem(id, { title: title || "Recent work" });
+      revalidatePath("/");
+      revalidatePath("/admin/gallery");
+    } catch {
+      /* ignore — surfaced elsewhere */
+    }
+  }
+  redirect("/admin/gallery?saved=1");
+}
+
+export async function removeGalleryImage(formData: FormData): Promise<void> {
+  await requireAuth();
+  const id = String(formData.get("id") ?? "").trim();
+  let error: string | undefined;
+  if (id) {
+    try {
+      await deleteGalleryItem(id);
+      revalidatePath("/");
+      revalidatePath("/admin/gallery");
+    } catch (e) {
+      error = e instanceof Error ? e.message : "Could not delete photo.";
+    }
+  }
+  redirect(error ? `/admin/gallery?error=${encodeURIComponent(error)}` : "/admin/gallery?deleted=1");
 }
 
 export async function quickStatus(formData: FormData): Promise<void> {

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Placeholder } from "./Placeholder";
 import { Icon } from "./Icons";
 import { Reveal } from "./Reveal";
-import { galleryItems as items, type GalleryItem } from "@/lib/showcase";
+import { type GalleryItem } from "@/lib/showcase";
 
 function GalleryMedia({
   item,
@@ -21,17 +21,17 @@ function GalleryMedia({
   return <Placeholder tone={item.tone} className={className} />;
 }
 
-export function Gallery() {
+export function Gallery({ items }: { items: GalleryItem[] }) {
   const [open, setOpen] = useState<number | null>(null);
 
   const close = useCallback(() => setOpen(null), []);
   const next = useCallback(
     () => setOpen((i) => (i === null ? i : (i + 1) % items.length)),
-    []
+    [items.length]
   );
   const prev = useCallback(
     () => setOpen((i) => (i === null ? i : (i - 1 + items.length) % items.length)),
-    []
+    [items.length]
   );
 
   useEffect(() => {

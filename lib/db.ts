@@ -2,6 +2,7 @@ import "server-only";
 import { promises as fs } from "fs";
 import path from "path";
 import { seedStock, type Car } from "./stock";
+import type { GalleryItem } from "./showcase";
 
 /**
  * Storage adapter for car listings. Three backends, chosen automatically:
@@ -24,6 +25,10 @@ const NO_DB_HINT =
 const NO_TABLE_HINT =
   "The `cars` table doesn't exist yet. Open Supabase → SQL Editor and run the " +
   "setup SQL from supabase-schema.sql, then try again.";
+
+const GALLERY_TABLE_HINT =
+  "The `gallery` table doesn't exist yet. Open Supabase → SQL Editor and run the " +
+  "gallery table SQL from supabase-schema.sql, then try again.";
 
 /* ------------------------------------------------------------------ */
 /* Supabase (HTTPS) backend                                            */
@@ -261,4 +266,120 @@ export async function deleteCar(slug: string): Promise<void> {
 export async function slugExists(slug: string, ignore?: string): Promise<boolean> {
   const all = await getStock();
   return all.some((c) => c.slug === slug && c.slug !== ignore);
+}
+
+/* ------------------------------------------------------------------ */
+/* Gallery                                                             */
+/* ------------------------------------------------------------------ */
+
+const GALLERY_FILE = path.join(DATA_DIR, "gallery.json");
+
+async function galleryFileRead(): Promise<GalleryItem[]> {
+  try {
+    return JSON.parse(await fs.readFile(GALLERY_FILE, "utf8")) as GalleryItem[];
+  } catch {
+    return [];
+  }
+}
+async function galleryFileWrite(items: GalleryItem[]): Promise<void> {
+  await fs.mkdir(DATA_DIR, { recursive: true });
+  try {
+    await fs.writeFile(GALLERY_FILE, JSON.stringify(items, null, 2), "utf8");
+  } catch {
+    throw new Error(NO_DB_HINT);
+  }
+}
+
+export async function getGallery(): Promise<GalleryItem[]> {
+  if (useSupabase) {
+    try {
+      const client = await sb();
+      const { data, error } = await client
+        .from("gallery")
+        .select("data")
+        .order("created_at", { ascending: false });
+      if (error) {
+        if (!isMissingTable(error)) console.error("getGallery:", error.message);
+        return [];
+      }
+      return (data ?? []).map((r) => (r as { data: GalleryItem }).data);
+    } catch (e) {
+      console.error("getGallery exception:", e);
+      return [];
+    }
+  }
+  if (usePg) {
+    const db = await sql();
+    await db`CREATE TABLE IF NOT EXISTS gallery (id TEXT PRIMARY KEY, data JSONB NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now())`;
+    const rows = await db`SELECT data FROM gallery ORDER BY created_at DESC`;
+    return rows.map((r) => (r as unknown as { data: GalleryItem }).data);
+  }
+  return galleryFileRead();
+}
+
+export async function addGalleryItems(items: GalleryItem[]): Promise<void> {
+  if (items.length === 0) return;
+  if (useSupabase) {
+    const client = await sb();
+    const { error } = await client
+      .from("gallery")
+      .insert(items.map((it) => ({ id: it.id, data: it })));
+    if (error) throw new Error(isMissingTable(error) ? GALLERY_TABLE_HINT : error.message);
+    return;
+  }
+  if (usePg) {
+    const db = await sql();
+    await db`CREATE TABLE IF NOT EXISTS gallery (id TEXT PRIMARY KEY, data JSONB NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now())`;
+    for (const it of items) {
+      await db`INSERT INTO gallery (id, data) VALUES (${it.id}, ${db.json(
+        it as unknown as import("postgres").JSONValue
+      )}) ON CONFLICT (id) DO NOTHING`;
+    }
+    return;
+  }
+  const all = await galleryFileRead();
+  await galleryFileWrite([...items, ...all]);
+}
+
+export async function updateGalleryItem(id: string, patch: Partial<GalleryItem>): Promise<void> {
+  if (useSupabase) {
+    const client = await sb();
+    const { data, error } = await client.from("gallery").select("data").eq("id", id).maybeSingle();
+    if (error) throw new Error(isMissingTable(error) ? GALLERY_TABLE_HINT : error.message);
+    const current = (data as { data: GalleryItem } | null)?.data;
+    if (!current) return;
+    const next = { ...current, ...patch };
+    const { error: upErr } = await client.from("gallery").update({ data: next }).eq("id", id);
+    if (upErr) throw new Error(upErr.message);
+    return;
+  }
+  if (usePg) {
+    const db = await sql();
+    const rows = await db`SELECT data FROM gallery WHERE id = ${id} LIMIT 1`;
+    const current = (rows[0] as unknown as { data: GalleryItem } | undefined)?.data;
+    if (!current) return;
+    const next = { ...current, ...patch };
+    await db`UPDATE gallery SET data = ${db.json(
+      next as unknown as import("postgres").JSONValue
+    )} WHERE id = ${id}`;
+    return;
+  }
+  const all = await galleryFileRead();
+  await galleryFileWrite(all.map((g) => (g.id === id ? { ...g, ...patch } : g)));
+}
+
+export async function deleteGalleryItem(id: string): Promise<void> {
+  if (useSupabase) {
+    const client = await sb();
+    const { error } = await client.from("gallery").delete().eq("id", id);
+    if (error) throw new Error(isMissingTable(error) ? GALLERY_TABLE_HINT : error.message);
+    return;
+  }
+  if (usePg) {
+    const db = await sql();
+    await db`DELETE FROM gallery WHERE id = ${id}`;
+    return;
+  }
+  const all = await galleryFileRead();
+  await galleryFileWrite(all.filter((g) => g.id !== id));
 }

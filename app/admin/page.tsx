@@ -64,10 +64,16 @@ export default async function AdminPage({
               your stock below.
             </p>
           </div>
-          <Link href="/admin/new" className="btn-primary">
-            <Icon name="sparkle" width={18} height={18} />
-            New listing
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/admin/gallery" className="btn-outline">
+              <Icon name="sparkle" width={18} height={18} />
+              Manage gallery
+            </Link>
+            <Link href="/admin/new" className="btn-primary">
+              <Icon name="sparkle" width={18} height={18} />
+              New listing
+            </Link>
+          </div>
         </div>
 
         {!configured && (

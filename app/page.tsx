@@ -6,7 +6,7 @@ import { BeforeAfter } from "@/components/BeforeAfter";
 import { ProcessTimeline } from "@/components/ProcessTimeline";
 import { Services } from "@/components/Services";
 import { StockSection } from "@/components/StockSection";
-import { Gallery } from "@/components/Gallery";
+import { GallerySection } from "@/components/GallerySection";
 import { Testimonials } from "@/components/Testimonials";
 import { CTABand } from "@/components/CTABand";
 import { Contact } from "@/components/Contact";
@@ -57,7 +57,7 @@ export default function Home() {
         <Services />
         <MakesMarquee />
         <StockSection />
-        <Gallery />
+        <GallerySection />
         <Testimonials />
         <CTABand />
         <Contact />

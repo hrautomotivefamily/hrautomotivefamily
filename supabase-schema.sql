@@ -17,3 +17,12 @@ create table if not exists public.cars (
 
 -- Helps the "newest first" ordering.
 create index if not exists cars_created_at_idx on public.cars (created_at desc);
+
+-- Homepage gallery photos (managed from /admin/gallery).
+create table if not exists public.gallery (
+  id          text primary key,
+  data        jsonb not null,
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists gallery_created_at_idx on public.gallery (created_at desc);
