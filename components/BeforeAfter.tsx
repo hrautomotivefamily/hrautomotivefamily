@@ -17,10 +17,19 @@ function Layer({
   alt: string;
   dim?: boolean;
 }) {
-  if (src) {
+  const [error, setError] = useState(false);
+  if (src && !error) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} className="h-full w-full object-cover" />;
+    return (
+      <img
+        src={src}
+        alt={alt}
+        onError={() => setError(true)}
+        className="h-full w-full object-cover"
+      />
+    );
   }
+  // Missing/broken photo → clean branded placeholder instead of a broken icon
   return <Placeholder tone={tone} dim={dim} />;
 }
 
