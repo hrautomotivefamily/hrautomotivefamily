@@ -1,17 +1,23 @@
 import type { MetadataRoute } from "next";
 import { getStock } from "@/lib/db";
+import { getBaseUrl } from "@/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = "https://hrautomotive.co.uk";
+  const base = getBaseUrl();
   const now = new Date();
 
-  const cars = await getStock();
-  const carPages: MetadataRoute.Sitemap = cars.map((car) => ({
-    url: `${base}/stock/${car.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }));
+  let carPages: MetadataRoute.Sitemap = [];
+  try {
+    const cars = await getStock();
+    carPages = cars.map((car) => ({
+      url: `${base}/stock/${car.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    }));
+  } catch {
+    /* keep the core pages even if listings can't be loaded */
+  }
 
   return [
     { url: base, lastModified: now, changeFrequency: "weekly", priority: 1 },
@@ -25,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${base}/business-cards`,
       lastModified: now,
       changeFrequency: "yearly",
-      priority: 0.4,
+      priority: 0.3,
     },
     ...carPages,
   ];

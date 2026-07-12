@@ -188,3 +188,18 @@ export const openingHours = [
   { day: "Saturday", hours: "9:00 – 14:00" },
   { day: "Sunday", hours: "Closed" },
 ];
+
+// Structured opening hours for schema.org (search engines).
+export const hoursSpec = [
+  {
+    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "08:00",
+    closes: "18:00",
+  },
+  { days: ["Saturday"], opens: "09:00", closes: "14:00" },
+];
+
+// Approximate Halifax town-centre coordinates for local map/search.
+// TODO: replace with your exact workshop location.
+export const geo = { latitude: 53.7247, longitude: -1.8577 };
+

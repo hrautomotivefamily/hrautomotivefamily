@@ -3,6 +3,7 @@ import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { site } from "@/lib/site";
+import { getBaseUrl } from "@/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,38 +18,73 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
+const baseUrl = getBaseUrl();
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hrautomotive.co.uk"),
+  metadataBase: new URL(baseUrl),
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: `${site.name} — Car Body Repairs & Bodywork in Halifax`,
     template: `%s — ${site.name}`,
   },
   description: site.description,
+  applicationName: site.name,
   keywords: [
-    "bodyshop Halifax",
     "car body repairs Halifax",
+    "bodyshop Halifax",
+    "mechanics Halifax",
+    "car repairs Halifax",
+    "garage Halifax",
     "bodywork West Yorkshire",
     "accident repairs Halifax",
     "car respray Halifax",
+    "dent removal Halifax",
+    "scratch repair Halifax",
     "alloy wheel repair Calderdale",
     "insurance repairs West Yorkshire",
     "cars for sale Halifax",
     "used cars Halifax",
+    "car spraying Halifax",
     "family run garage Halifax",
+    "HR Automotive Halifax",
   ],
   authors: [{ name: site.name }],
+  creator: site.name,
+  publisher: site.name,
+  category: "Automotive",
+  alternates: { canonical: "/" },
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} — Car Body Repairs & Bodywork in Halifax`,
     description: site.description,
     type: "website",
     siteName: site.name,
+    locale: "en_GB",
+    url: baseUrl,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: `${site.name} — ${site.tagline}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} — Car Body Repairs & Bodywork in Halifax`,
     description: site.description,
+    images: ["/og.png"],
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  other: {
+    "geo.region": "GB-CLD",
+    "geo.placename": "Halifax, West Yorkshire",
+    "geo.position": "53.7247;-1.8577",
+    ICBM: "53.7247, -1.8577",
+  },
 };
 
 export const viewport: Viewport = {

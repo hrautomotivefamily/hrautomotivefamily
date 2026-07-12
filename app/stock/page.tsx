@@ -8,8 +8,9 @@ import { getStock } from "@/lib/db";
 import { site, areaServed } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Cars for Sale in Halifax",
+  title: "Cars for Sale in Halifax, West Yorkshire",
   description: `Quality used cars, repaired and finished in-house by ${site.name} in Halifax, West Yorkshire. Honest descriptions and fair prices.`,
+  alternates: { canonical: "/stock" },
 };
 
 export const dynamic = "force-dynamic";

@@ -8,6 +8,7 @@ import { Icon } from "@/components/Icons";
 import { getCar, getStock } from "@/lib/db";
 import { formatPrice, formatMileage } from "@/lib/stock";
 import { site } from "@/lib/site";
+import { getBaseUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: { canonical: `/stock/${car.slug}` },
     openGraph: { title, description, type: "website" },
   };
 }
@@ -68,15 +70,25 @@ export default async function CarPage({ params }: { params: { slug: string } }) 
     }),
     offers: {
       "@type": "Offer",
+      url: `${getBaseUrl()}/stock/${car.slug}`,
       price: car.price,
       priceCurrency: "GBP",
       availability:
         car.status === "sold"
           ? "https://schema.org/SoldOut"
           : "https://schema.org/InStock",
-      seller: { "@type": "AutoDealer", name: site.name },
-      areaServed: `${site.locality}, ${site.region}`,
+      seller: { "@type": "AutoDealer", name: site.name, areaServed: `${site.locality}, ${site.region}` },
     },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: getBaseUrl() },
+      { "@type": "ListItem", position: 2, name: "Cars for Sale", item: `${getBaseUrl()}/stock` },
+      { "@type": "ListItem", position: 3, name: car.title },
+    ],
   };
 
   const others = (await getStock()).filter(
@@ -85,6 +97,10 @@ export default async function CarPage({ params }: { params: { slug: string } }) 
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
