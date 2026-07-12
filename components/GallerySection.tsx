@@ -1,14 +1,12 @@
 import { getGallery } from "@/lib/db";
-import { galleryItems as seedGallery } from "@/lib/showcase";
 import { Gallery } from "./Gallery";
 
 /**
- * Server wrapper: loads gallery images managed in /admin. If none have been
- * added yet, it shows the branded placeholder tiles so the section still looks
- * complete.
+ * Server wrapper: shows ONLY the photos managed in /admin/gallery. If none have
+ * been added, the whole gallery section is hidden (no placeholder tiles).
  */
 export async function GallerySection() {
-  const stored = await getGallery();
-  const items = stored.length > 0 ? stored : seedGallery;
+  const items = await getGallery();
+  if (items.length === 0) return null;
   return <Gallery items={items} />;
 }
