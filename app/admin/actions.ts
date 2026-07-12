@@ -22,7 +22,7 @@ import { slugify, type Car, type StockStatus } from "@/lib/stock";
 import type { GalleryItem } from "@/lib/showcase";
 import type { FormState } from "@/lib/form";
 
-const STATUSES: StockStatus[] = ["available", "reserved", "sold"];
+const STATUSES: StockStatus[] = ["available", "reserved", "deposit", "sold"];
 const TONES: Car["tone"][] = ["navy", "charcoal", "midnight", "slate"];
 
 /* ----------------------------- auth ----------------------------- */
@@ -234,6 +234,46 @@ export async function removeGalleryImage(formData: FormData): Promise<void> {
     }
   }
   redirect(error ? `/admin/gallery?error=${encodeURIComponent(error)}` : "/admin/gallery?deleted=1");
+}
+
+/* --------------------------- bulk actions ----------------------- */
+
+function revalidateStock(slugs: string[]) {
+  revalidatePath("/");
+  revalidatePath("/stock");
+  revalidatePath("/admin");
+  for (const s of slugs) revalidatePath(`/stock/${s}`);
+}
+
+export async function bulkSetStatus(
+  slugs: string[],
+  status: StockStatus
+): Promise<FormState> {
+  if (!(await isAuthed())) return { error: "Not authorised." };
+  if (!STATUSES.includes(status)) return { error: "Invalid status." };
+  if (!Array.isArray(slugs) || slugs.length === 0) return { error: "Nothing selected." };
+  try {
+    for (const slug of slugs) {
+      const car = await getCar(slug);
+      if (car) await updateCar(slug, { ...car, status });
+    }
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Could not update listings." };
+  }
+  revalidateStock(slugs);
+  return { ok: true };
+}
+
+export async function bulkDelete(slugs: string[]): Promise<FormState> {
+  if (!(await isAuthed())) return { error: "Not authorised." };
+  if (!Array.isArray(slugs) || slugs.length === 0) return { error: "Nothing selected." };
+  try {
+    for (const slug of slugs) await deleteCar(slug);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Could not delete listings." };
+  }
+  revalidateStock(slugs);
+  return { ok: true };
 }
 
 export async function quickStatus(formData: FormData): Promise<void> {

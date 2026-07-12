@@ -1,4 +1,13 @@
-export type StockStatus = "available" | "reserved" | "sold";
+export type StockStatus = "available" | "reserved" | "deposit" | "sold";
+
+// Shared labels/order for statuses, used across the site and admin.
+export const STATUS_ORDER: StockStatus[] = ["available", "reserved", "deposit", "sold"];
+export const STATUS_LABELS: Record<StockStatus, string> = {
+  available: "Available",
+  reserved: "Reserved",
+  deposit: "Deposit taken",
+  sold: "Sold",
+};
 
 export type Car = {
   slug: string;

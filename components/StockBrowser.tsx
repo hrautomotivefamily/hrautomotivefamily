@@ -10,13 +10,14 @@ type Tab = "all" | StockStatus;
 const TABS: { key: Tab; label: string }[] = [
   { key: "available", label: "Available" },
   { key: "reserved", label: "Reserved" },
+  { key: "deposit", label: "Deposit taken" },
   { key: "sold", label: "Sold" },
   { key: "all", label: "All" },
 ];
 
 export function StockBrowser({ cars }: { cars: Car[] }) {
   const counts = useMemo(() => {
-    const c = { all: cars.length, available: 0, reserved: 0, sold: 0 };
+    const c = { all: cars.length, available: 0, reserved: 0, deposit: 0, sold: 0 };
     for (const car of cars) c[car.status]++;
     return c;
   }, [cars]);

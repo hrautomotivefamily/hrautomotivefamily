@@ -32,6 +32,7 @@ export async function generateMetadata({
 const statusLabel = {
   available: "Available now",
   reserved: "Reserved",
+  deposit: "Deposit taken",
   sold: "Sold",
 } as const;
 

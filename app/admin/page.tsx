@@ -2,12 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getStock } from "@/lib/db";
 import { adminConfigured } from "@/lib/auth";
-import { formatPrice, formatMileage, type StockStatus } from "@/lib/stock";
-import { CarPhoto } from "@/components/CarPhoto";
 import { Icon } from "@/components/Icons";
 import { BrandLogo } from "@/components/BrandLogo";
-import { ConfirmButton } from "@/components/admin/ConfirmButton";
-import { logout, removeCar, quickStatus } from "./actions";
+import { AdminListings } from "@/components/admin/AdminListings";
+import { logout } from "./actions";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -15,12 +13,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-
-const statusStyles: Record<StockStatus, string> = {
-  available: "bg-success/15 text-success",
-  reserved: "bg-accent/15 text-accent",
-  sold: "bg-charcoal/15 text-charcoal dark:bg-white/10 dark:text-white",
-};
 
 export default async function AdminPage({
   searchParams,
@@ -102,93 +94,18 @@ export default async function AdminPage({
         )}
 
         {/* list */}
-        <div className="mt-8 space-y-4">
-          {cars.length === 0 && (
+        <div className="mt-8">
+          {cars.length === 0 ? (
             <div className="card-surface rounded-xl2 p-10 text-center shadow-soft">
               <p className="text-lg font-semibold">No listings yet</p>
-              <p className="mt-2 text-muted">
-                Add your first car to get started.
-              </p>
+              <p className="mt-2 text-muted">Add your first car to get started.</p>
               <Link href="/admin/new" className="btn-primary mt-6">
                 New listing
               </Link>
             </div>
+          ) : (
+            <AdminListings cars={cars} />
           )}
-
-          {cars.map((car) => (
-            <div
-              key={car.slug}
-              className="card-surface flex flex-col gap-4 rounded-xl2 p-4 shadow-soft sm:flex-row sm:items-center"
-            >
-              <div className="relative h-24 w-40 shrink-0 overflow-hidden rounded-lg">
-                <CarPhoto car={car} sizes="160px" className="object-cover" />
-              </div>
-
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ${statusStyles[car.status]}`}
-                  >
-                    {car.status}
-                  </span>
-                  <span className="text-sm text-muted">
-                    {car.plateAge || car.year}
-                  </span>
-                </div>
-                <h2 className="mt-1 truncate font-heading text-lg font-bold">
-                  {car.title}
-                </h2>
-                <p className="text-sm text-muted">
-                  {formatPrice(car.price)} · {formatMileage(car.mileage)} ·{" "}
-                  <Link
-                    href={`/stock/${car.slug}`}
-                    target="_blank"
-                    className="text-accent hover:underline"
-                  >
-                    /stock/{car.slug}
-                  </Link>
-                </p>
-              </div>
-
-              {/* quick status */}
-              <div className="flex flex-wrap items-center gap-2">
-                {(["available", "reserved", "sold"] as StockStatus[]).map((s) => (
-                  <form action={quickStatus} key={s}>
-                    <input type="hidden" name="slug" value={car.slug} />
-                    <input type="hidden" name="status" value={s} />
-                    <button
-                      type="submit"
-                      disabled={car.status === s}
-                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold capitalize transition-colors ${
-                        car.status === s
-                          ? "cursor-default border-transparent " + statusStyles[s]
-                          : "border-hair text-muted hover:border-accent hover:text-accent"
-                      }`}
-                    >
-                      {s}
-                    </button>
-                  </form>
-                ))}
-
-                <Link
-                  href={`/admin/${car.slug}/edit`}
-                  className="inline-flex h-9 items-center gap-1.5 rounded-full border border-hair px-4 text-xs font-semibold hover:border-accent hover:text-accent"
-                >
-                  Edit
-                </Link>
-
-                <form action={removeCar}>
-                  <input type="hidden" name="slug" value={car.slug} />
-                  <ConfirmButton
-                    confirm={`Delete "${car.title}"? This cannot be undone.`}
-                    className="inline-flex h-9 items-center rounded-full border border-red-500/30 px-4 text-xs font-semibold text-red-600 hover:bg-red-500/10 disabled:opacity-50 dark:text-red-400"
-                  >
-                    Delete
-                  </ConfirmButton>
-                </form>
-              </div>
-            </div>
-          ))}
         </div>
       </main>
     </div>

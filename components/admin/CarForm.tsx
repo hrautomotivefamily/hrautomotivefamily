@@ -183,7 +183,7 @@ export function CarForm({ car }: { car?: Car }) {
       <section className="card-surface rounded-xl2 p-6 shadow-soft">
         <h2 className="font-heading text-lg font-bold">Status &amp; display</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Select label="Status" name="status" defaultValue={car?.status ?? "available"} options={["available", "reserved", "sold"]} />
+          <Select label="Status" name="status" defaultValue={car?.status ?? "available"} options={["available", "reserved", "deposit", "sold"]} />
           <Select label="Placeholder colour" name="tone" defaultValue={car?.tone ?? "navy"} options={["navy", "charcoal", "midnight", "slate"]} />
           <Field
             label="URL slug (optional)"

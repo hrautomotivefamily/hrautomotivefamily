@@ -2,19 +2,16 @@ import Link from "next/link";
 import { CarPhoto } from "./CarPhoto";
 import { SoldStamp } from "./SoldStamp";
 import { Icon } from "./Icons";
-import { formatMileage, formatPrice, type Car } from "@/lib/stock";
+import { formatMileage, formatPrice, STATUS_LABELS, type Car } from "@/lib/stock";
 
 const statusStyles: Record<Car["status"], string> = {
   available: "bg-success text-white",
   reserved: "bg-accent text-white",
+  deposit: "bg-amber-500 text-white",
   sold: "bg-charcoal text-white",
 };
 
-const statusLabel: Record<Car["status"], string> = {
-  available: "Available",
-  reserved: "Reserved",
-  sold: "Sold",
-};
+const statusLabel = STATUS_LABELS;
 
 export function StockCard({ car, priority = false }: { car: Car; priority?: boolean }) {
   const sold = car.status === "sold";
