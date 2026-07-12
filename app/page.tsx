@@ -11,6 +11,7 @@ import { Testimonials } from "@/components/Testimonials";
 import { CTABand } from "@/components/CTABand";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { MysteryGift } from "@/components/MysteryGift";
 import { site, services, testimonials, areaServed } from "@/lib/site";
 
 const jsonLd = {
@@ -63,6 +64,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <MysteryGift />
     </>
   );
 }
