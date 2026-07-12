@@ -7,7 +7,7 @@ import { HeroBackdrop } from "./HeroBackdrop";
 import { Icon } from "./Icons";
 
 const stats = [
-  { value: "6+", label: "Years of craft" },
+  { value: "15+", label: "Years of craft" },
   { value: "2,000+", label: "Repairs completed" },
   { value: "100%", label: "Honest workmanship" },
 ];

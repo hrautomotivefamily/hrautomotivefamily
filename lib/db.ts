@@ -60,15 +60,6 @@ function isMissingTable(err: { code?: string; message?: string } | null) {
   );
 }
 
-async function supabaseSeedIfEmpty() {
-  const client = await sb();
-  await client
-    .from("cars")
-    .upsert(
-      seedStock.map((c) => ({ slug: c.slug, data: c })),
-      { onConflict: "slug" }
-    );
-}
 
 /* ------------------------------------------------------------------ */
 /* JSON file backend                                                   */
@@ -129,17 +120,6 @@ async function sql() {
         created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
       )
     `;
-    const [{ count }] = await sqlClient`SELECT count(*)::int AS count FROM cars`;
-    if (count === 0) {
-      for (const car of [...seedStock].reverse()) {
-        await sqlClient`
-          INSERT INTO cars (slug, data) VALUES (${car.slug}, ${sqlClient.json(
-            car as unknown as import("postgres").JSONValue
-          )})
-          ON CONFLICT (slug) DO NOTHING
-        `;
-      }
-    }
     schemaReady = true;
   }
   return sqlClient;
@@ -162,11 +142,7 @@ export async function getStock(): Promise<Car[]> {
         console.error("Supabase getStock error:", error.message);
         return [...seedStock];
       }
-      if (!data || data.length === 0) {
-        await supabaseSeedIfEmpty();
-        return [...seedStock];
-      }
-      return data.map((r) => (r as { data: Car }).data);
+      return (data ?? []).map((r) => (r as { data: Car }).data);
     } catch (e) {
       console.error("Supabase getStock exception:", e);
       return [...seedStock];
