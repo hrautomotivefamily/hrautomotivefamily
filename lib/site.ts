@@ -5,8 +5,7 @@ export const site = {
   // TODO: replace with your real number — used for the click-to-call buttons
   phone: "+44 0000 000000",
   phoneDisplay: "Call us today",
-  // TODO: replace with your Facebook page/profile link
-  facebook: "https://www.facebook.com/",
+  facebook: "https://www.facebook.com/share/1CuheSyDLS/",
   website: "www.hrautomotive.co.uk",
   locality: "Halifax",
   region: "West Yorkshire",
