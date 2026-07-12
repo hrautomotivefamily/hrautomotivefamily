@@ -91,6 +91,12 @@ export const services = [
     icon: "wheel",
   },
   {
+    title: "Oil Changes & Servicing",
+    description:
+      "Affordable oil changes and routine servicing — quality parts and honest prices to keep you moving.",
+    icon: "oil",
+  },
+  {
     title: "Vehicle Restoration",
     description:
       "Careful, meticulous restoration that honours the character of every vehicle.",

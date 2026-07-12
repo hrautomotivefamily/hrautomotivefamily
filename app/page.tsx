@@ -102,14 +102,16 @@ export default function Home() {
       <Navbar />
       <main id="main">
         <Hero />
-        <Highlights />
-        <BeforeAfter />
-        <ProcessTimeline />
-        <Services />
-        <MakesMarquee />
+        {/* Cars for sale — front and centre */}
         <StockSection />
+        <MakesMarquee />
+        <Highlights />
         <GallerySection />
         <Testimonials />
+        {/* Descriptions & about — kept toward the bottom */}
+        <Services />
+        <BeforeAfter />
+        <ProcessTimeline />
         <CTABand />
         <Contact />
       </main>

@@ -13,9 +13,9 @@ const items = [
     text: "Clear pricing and straight advice — never a hard sell.",
   },
   {
-    icon: "spray",
-    title: "Colour-matched paint",
-    text: "Computerised matching for a seamless factory finish.",
+    icon: "sparkle",
+    title: "Quality first",
+    text: "We prioritise quality on every job, big or small.",
   },
   {
     icon: "star",

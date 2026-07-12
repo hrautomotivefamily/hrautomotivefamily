@@ -117,6 +117,12 @@ export function Icon({ name, ...props }: { name: string } & IconProps) {
       <path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.7l5.4-.8L12 4Z" />
     ),
     facebook: <path d="M15 5h-1.5A2.5 2.5 0 0 0 11 7.5V21M8.5 11.5H15" />,
+    oil: (
+      <>
+        <path d="M12 3c3.2 4.2 5 6.7 5 9.2a5 5 0 0 1-10 0C7 9.7 8.8 7.2 12 3Z" />
+        <path d="M10 13a2 2 0 0 0 2 2" />
+      </>
+    ),
   };
 
   return (
