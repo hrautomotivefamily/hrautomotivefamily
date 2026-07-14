@@ -22,7 +22,7 @@ export function StockBrowser({ cars }: { cars: Car[] }) {
     return c;
   }, [cars]);
 
-  const [tab, setTab] = useState<Tab>(counts.available > 0 ? "available" : "all");
+  const [tab, setTab] = useState<Tab>("all");
 
   const visible = tab === "all" ? cars : cars.filter((c) => c.status === tab);
 

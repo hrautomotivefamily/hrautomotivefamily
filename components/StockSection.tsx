@@ -11,7 +11,7 @@ export async function StockSection() {
     ...all.filter((c) => c.status !== "sold"),
     ...all.filter((c) => c.status === "sold"),
   ];
-  const cars = ordered.slice(0, 3);
+  const cars = ordered.slice(0, 6);
 
   return (
     <section id="stock" className="relative py-24 sm:py-32">
