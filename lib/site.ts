@@ -2,9 +2,9 @@ export const site = {
   name: "HR Automotive",
   tagline: "Family Run. Professionally Done.",
   email: "HRautomotivefamily@gmail.com",
-  // TODO: replace with your real number — used for the click-to-call buttons
-  phone: "+44 0000 000000",
-  phoneDisplay: "Call us today",
+  // Used for the click-to-call buttons and schema.org telephone
+  phone: "+44 7521 417466",
+  phoneDisplay: "07521 417466",
   facebook: "https://www.facebook.com/share/1CuheSyDLS/",
   website: "www.hrautomotive.co.uk",
   locality: "Halifax",
