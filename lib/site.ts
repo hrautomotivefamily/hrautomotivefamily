@@ -27,6 +27,7 @@ export const areaServed = [
 ];
 
 export const navLinks = [
+  { label: "Mobile Mechanic", href: "/#mobile" },
   { label: "Services", href: "/#services" },
   { label: "Our Work", href: "/#work" },
   { label: "Cars for Sale", href: "/stock" },

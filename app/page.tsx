@@ -6,6 +6,7 @@ import { BeforeAfter } from "@/components/BeforeAfter";
 import { ProcessTimeline } from "@/components/ProcessTimeline";
 import { Services } from "@/components/Services";
 import { StockSection } from "@/components/StockSection";
+import { MobileMechanic } from "@/components/MobileMechanic";
 import { GallerySection } from "@/components/GallerySection";
 import { Testimonials } from "@/components/Testimonials";
 import { CTABand } from "@/components/CTABand";
@@ -102,6 +103,8 @@ export default function Home() {
       <Navbar />
       <main id="main">
         <Hero />
+        {/* Our differentiator — the mobile mechanic service */}
+        <MobileMechanic />
         {/* Cars for sale — front and centre */}
         <StockSection />
         <MakesMarquee />
