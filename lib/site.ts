@@ -37,6 +37,12 @@ export const navLinks = [
 
 export const services = [
   {
+    title: "Mobile Mechanic",
+    description:
+      "Can't get to us? We come to you. Our mobile mechanic service brings repairs and servicing to your home or roadside across Halifax and Calderdale.",
+    icon: "van",
+  },
+  {
     title: "Accident Repairs",
     description:
       "Complete collision repair restoring your vehicle to pre-accident condition and factory safety standards.",

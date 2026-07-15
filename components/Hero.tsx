@@ -62,13 +62,16 @@ export function Hero() {
           animate="show"
           className="lg:col-span-8 xl:col-span-7"
         >
-          <motion.span
-            variants={item}
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-medium tracking-wide text-white/80 backdrop-blur-md"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-success" />
-            Family-run bodyshop — Halifax, West Yorkshire
-          </motion.span>
+          <motion.div variants={item} className="flex flex-wrap gap-2.5">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-medium tracking-wide text-white/80 backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-success" />
+              Family-run bodyshop — Halifax, West Yorkshire
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/15 px-4 py-2 text-xs font-semibold tracking-wide text-white backdrop-blur-md">
+              <Icon name="van" width={15} height={15} />
+              Mobile mechanic — we come to you
+            </span>
+          </motion.div>
 
           <motion.h1
             variants={item}

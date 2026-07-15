@@ -123,6 +123,15 @@ export function Icon({ name, ...props }: { name: string } & IconProps) {
         <path d="M10 13a2 2 0 0 0 2 2" />
       </>
     ),
+    van: (
+      <>
+        <path d="M2 7h10v9H2z" />
+        <path d="M12 10h4.5l3 3.5V16H12z" />
+        <circle cx="6.5" cy="16.5" r="1.6" />
+        <circle cx="16.5" cy="16.5" r="1.6" />
+        <path d="M2 16h2.9M8.1 16H15" />
+      </>
+    ),
   };
 
   return (
