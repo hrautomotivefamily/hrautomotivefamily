@@ -1,6 +1,6 @@
 # HR Automotive
 
-> Family-run car body repair, bodywork, paint specialist and mobile mechanic in Halifax, West Yorkshire. We also sell quality used cars, repaired and prepared in-house.
+> Family-run car body repair, bodywork, paint specialist and mobile mechanic in Halifax, West Yorkshire. Bodywork on all makes and models; mechanical specialists in Peugeot, Citroën, Toyota Aygo and VW Polo. We also sell quality used cars, repaired and prepared in-house.
 
 Tagline: Family Run. Professionally Done.
 Location: Halifax, West Yorkshire, United Kingdom
@@ -8,13 +8,21 @@ Phone: 07521 417466
 Email: HRautomotivefamily@gmail.com
 
 ## About
-HR Automotive is a family-owned bodyshop and garage in Halifax offering
-professional accident and collision repair, bodywork, dent and scratch removal,
-panel replacement, paintwork and resprays, insurance repairs, alloy wheel
-repairs, affordable oil changes and servicing, and full vehicle restoration —
-professional results without dealership prices. We are also a mobile mechanic:
-if you can't get to us, we come to you across Halifax and Calderdale. We also
-sell affordable used cars that we repair and prepare ourselves.
+HR Automotive is a family-owned bodyshop, garage and mobile mechanic in Halifax
+offering professional accident and collision repair, bodywork, dent and scratch
+removal, panel replacement, paintwork and resprays, insurance repairs, alloy
+wheel repairs, affordable oil changes and servicing, and full vehicle
+restoration — professional results without dealership prices. We are also a
+mobile mechanic: if you can't get to us, we come to you across Halifax and
+Calderdale. We also sell affordable used cars that we repair and prepare
+ourselves.
+
+## Specialisms
+- Bodywork and accident repairs on ALL makes and models (universal).
+- Mechanical work and servicing: we specialise in Peugeot, Citroën, Toyota Aygo
+  and Volkswagen Polo, particularly older, more mechanical models (roughly
+  pre-2017). Newer, heavily electronic vehicles may be outside our mechanical
+  scope — ask us and we'll advise honestly.
 
 ## Key pages
 - Home: /

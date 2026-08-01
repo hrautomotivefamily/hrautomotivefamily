@@ -11,7 +11,7 @@ export const site = {
   region: "West Yorkshire",
   address: "Halifax, West Yorkshire",
   description:
-    "Halifax's family-run bodyshop. Expert accident repairs, bodywork and paint restoration completed with pride, precision and honest workmanship — professional results without dealership prices.",
+    "Halifax's family-run bodyshop, garage and mobile mechanic. Expert bodywork and accident repairs on all makes and models, plus servicing, resprays and quality used cars — honest workmanship without dealership prices. We come to you across Halifax and Calderdale.",
 };
 
 // Local areas served — powers copy and local SEO
@@ -29,9 +29,8 @@ export const areaServed = [
 export const navLinks = [
   { label: "Mobile Mechanic", href: "/#mobile" },
   { label: "Services", href: "/#services" },
-  { label: "Our Work", href: "/#work" },
+  { label: "Our Recent Work", href: "/#gallery" },
   { label: "Cars for Sale", href: "/stock" },
-  { label: "Gallery", href: "/#gallery" },
   { label: "Reviews", href: "/#reviews" },
   { label: "Contact", href: "/#contact" },
 ];
@@ -205,6 +204,10 @@ export const faqs = [
   {
     q: "Where are you based and which areas do you cover?",
     a: "We're a family-run garage and bodyshop in Halifax, West Yorkshire. We serve Halifax, Calderdale, Brighouse, Elland, Sowerby Bridge, Hebden Bridge, Huddersfield, Bradford and the wider West Yorkshire.",
+  },
+  {
+    q: "What makes and models do you work on?",
+    a: "We carry out bodywork and accident repairs on all makes and models — that side of the job is universal. For mechanical work and servicing we specialise in Peugeot, Citroën, Toyota Aygo and Volkswagen Polo, particularly older, more mechanical models (roughly pre-2017). If you're not sure whether we can help with your car, just call 07521 417466 and ask.",
   },
   {
     q: "How much does a repair or quote cost?",

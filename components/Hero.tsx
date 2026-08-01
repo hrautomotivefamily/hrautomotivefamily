@@ -95,8 +95,8 @@ export function Hero() {
               Get a Free Quote
               <Icon name="arrow" width={18} height={18} />
             </Link>
-            <Link href="#work" className="btn-ghost">
-              View Our Work
+            <Link href="#gallery" className="btn-ghost">
+              See Recent Work
             </Link>
           </motion.div>
 

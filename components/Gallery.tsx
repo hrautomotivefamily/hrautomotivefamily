@@ -57,12 +57,13 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
     >
       <div className="container-px">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="eyebrow">Gallery</span>
+          <span className="eyebrow">Our Recent Work</span>
           <h2 className="mt-4 font-heading text-4xl font-bold tracking-tight sm:text-5xl">
-            A portfolio built on results
+            The latest out of our workshop
           </h2>
           <p className="mt-5 text-lg text-muted">
-            A selection of recent work. Tap any image to view it full screen.
+            Real jobs, real results — bodywork, repairs and full transformations.
+            Tap any image to view it full screen.
           </p>
         </Reveal>
 
