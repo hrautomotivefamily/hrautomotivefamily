@@ -195,6 +195,35 @@ export const testimonials = [
   },
 ];
 
+// FAQs — shown on the page and emitted as FAQPage structured data, so search
+// engines and AI assistants can answer common questions directly.
+export const faqs = [
+  {
+    q: "Do you offer a mobile mechanic service?",
+    a: "Yes. We're a mobile mechanic as well as a bodyshop — if you can't get to us, we come to you. We carry out repairs and servicing at your home or roadside across Halifax and Calderdale. Call 07521 417466 to arrange a callout.",
+  },
+  {
+    q: "Where are you based and which areas do you cover?",
+    a: "We're a family-run garage and bodyshop in Halifax, West Yorkshire. We serve Halifax, Calderdale, Brighouse, Elland, Sowerby Bridge, Hebden Bridge, Huddersfield, Bradford and the wider West Yorkshire.",
+  },
+  {
+    q: "How much does a repair or quote cost?",
+    a: "Quotes are free and no-obligation. We give clear, honest pricing before any work starts — professional results without dealership prices. Call 07521 417466 or email HRautomotivefamily@gmail.com and we'll take a look.",
+  },
+  {
+    q: "Do you handle insurance repairs?",
+    a: "Yes. We handle accident and insurance repairs directly, start to finish, and keep you updated the whole way through.",
+  },
+  {
+    q: "Do you sell used cars?",
+    a: "Yes. We sell quality used cars that we repair and prepare in our own workshop to the same standard as our customer work. You can see our current stock on the Cars for Sale page.",
+  },
+  {
+    q: "Can you do oil changes and servicing?",
+    a: "Yes. We offer affordable oil changes and routine servicing using quality parts at honest prices to keep you moving.",
+  },
+];
+
 export const openingHours = [
   { day: "Monday – Friday", hours: "8:00 – 18:00" },
   { day: "Saturday", hours: "9:00 – 14:00" },

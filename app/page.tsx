@@ -11,9 +11,10 @@ import { GallerySection } from "@/components/GallerySection";
 import { Testimonials } from "@/components/Testimonials";
 import { CTABand } from "@/components/CTABand";
 import { Contact } from "@/components/Contact";
+import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
 import { MysteryGift } from "@/components/MysteryGift";
-import { site, services, testimonials, areaServed, hoursSpec, geo } from "@/lib/site";
+import { site, services, testimonials, areaServed, hoursSpec, geo, faqs } from "@/lib/site";
 import { getBaseUrl } from "@/lib/seo";
 
 const baseUrl = getBaseUrl();
@@ -89,6 +90,16 @@ const websiteJsonLd = {
   publisher: { "@id": `${baseUrl}/#business` },
 };
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function Home() {
   return (
     <>
@@ -99,6 +110,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <Navbar />
       <main id="main">
@@ -115,6 +130,7 @@ export default function Home() {
         <Services />
         <BeforeAfter />
         <ProcessTimeline />
+        <FAQ />
         <CTABand />
         <Contact />
       </main>

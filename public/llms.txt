@@ -1,29 +1,42 @@
 # HR Automotive
 
-> Family-run car body repair, bodywork and paint specialist in Halifax, West Yorkshire. We also sell quality used cars, repaired and prepared in-house.
+> Family-run car body repair, bodywork, paint specialist and mobile mechanic in Halifax, West Yorkshire. We also sell quality used cars, repaired and prepared in-house.
 
 Tagline: Family Run. Professionally Done.
 Location: Halifax, West Yorkshire, United Kingdom
+Phone: 07521 417466
 Email: HRautomotivefamily@gmail.com
 
 ## About
-HR Automotive is a family-owned bodyshop in Halifax offering professional
-accident and collision repair, bodywork, dent and scratch removal, panel
-replacement, paintwork and resprays, insurance repairs, alloy wheel repairs and
-full vehicle restoration — professional results without dealership prices. We
-also sell affordable used cars that we repair and prepare ourselves.
+HR Automotive is a family-owned bodyshop and garage in Halifax offering
+professional accident and collision repair, bodywork, dent and scratch removal,
+panel replacement, paintwork and resprays, insurance repairs, alloy wheel
+repairs, affordable oil changes and servicing, and full vehicle restoration —
+professional results without dealership prices. We are also a mobile mechanic:
+if you can't get to us, we come to you across Halifax and Calderdale. We also
+sell affordable used cars that we repair and prepare ourselves.
+
+## Key pages
+- Home: /
+- Mobile mechanic (we come to you): /#mobile
+- Services: /#services
+- Cars for sale (used cars, live stock): /stock
+- Gallery / our work: /#gallery
+- Contact & quotes: /#contact
 
 ## Areas served
 Halifax, Calderdale, Brighouse, Elland, Sowerby Bridge, Hebden Bridge,
 Huddersfield, Bradford and the wider West Yorkshire.
 
 ## Services
+- Mobile mechanic — repairs and servicing at your home or roadside
 - Accident & collision repairs
 - Bodywork and panel repair / replacement
 - Dent removal and scratch repairs
 - Paintwork, resprays and colour matching
 - Insurance repairs (handled directly)
 - Alloy wheel repairs
+- Oil changes and routine servicing (affordable)
 - Vehicle restoration
 - Used car sales
 
@@ -33,4 +46,5 @@ Saturday: 9:00–14:00
 Sunday: Closed
 
 ## Contact
-Email HRautomotivefamily@gmail.com for a free, no-obligation quote or to book in.
+Call 07521 417466 or email HRautomotivefamily@gmail.com for a free,
+no-obligation quote, a mobile callout, or to book your car in.
