@@ -42,13 +42,13 @@ export function Navbar({
             : "border-b border-transparent bg-transparent"
         }`}
       >
-        <nav className="container-px flex h-[72px] items-center justify-between">
+        <nav className="container-px flex h-[88px] items-center justify-between">
           <Link
             href="/"
             className="flex items-center gap-3"
             aria-label={`${site.name} home`}
           >
-            <BrandLogo dark={!scrolled} heightClass="h-9" />
+            <BrandLogo dark={!scrolled} heightClass="h-16" />
           </Link>
 
           <div className="hidden items-center gap-8 lg:flex">
@@ -103,7 +103,7 @@ export function Navbar({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-navy/95 backdrop-blur-xl lg:hidden"
           >
-            <div className="container-px flex h-[72px] items-center justify-between">
+            <div className="container-px flex h-[88px] items-center justify-between">
               <span className="font-heading text-lg font-bold text-white">
                 {site.name}
               </span>

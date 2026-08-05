@@ -21,7 +21,7 @@ export default async function StockPage() {
   return (
     <>
       <Navbar variant="solid" />
-      <main id="main" className="pt-[72px]">
+      <main id="main" className="pt-[88px]">
         {/* header */}
         <section className="border-b border-hair bg-[color:var(--bg-subtle)]">
           <div className="container-px py-14 sm:py-20">

@@ -107,7 +107,7 @@ export default async function CarPage({ params }: { params: { slug: string } }) 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Navbar variant="solid" />
-      <main id="main" className="pt-[72px]">
+      <main id="main" className="pt-[88px]">
         <div className="container-px py-10 sm:py-14">
           {/* breadcrumb */}
           <nav className="mb-8 flex items-center gap-2 text-sm text-muted">
