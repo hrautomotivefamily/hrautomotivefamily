@@ -3,9 +3,10 @@
 import { useState } from "react";
 
 /**
- * The hero background. Once you upload public/brand/logo-white.png it shows your
- * real logo as a large, subtle watermark. Until then it renders a clean, premium
- * brand wash (no illustrated car).
+ * The hero background. Once you upload public/brand/hero.jpg it shows that photo
+ * as the full-bleed hero background (the navy gradient overlays in Hero.tsx keep
+ * the white text readable on top). Until then it falls back to a large, subtle
+ * "HR" brand wash.
  */
 export function HeroBackdrop() {
   const [failed, setFailed] = useState(false);
@@ -15,11 +16,11 @@ export function HeroBackdrop() {
       {!failed ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src="/brand/logo-white.png"
+          src="/brand/hero.jpg"
           alt=""
           aria-hidden
           onError={() => setFailed(true)}
-          className="pointer-events-none absolute right-[-4%] top-1/2 w-[62%] max-w-3xl -translate-y-1/2 object-contain opacity-[0.08]"
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         />
       ) : (
         <span
